@@ -32,9 +32,8 @@ public class Person extends OwnedEntity {
     @Embedded
     private Coordinates coordinates;
 
-    // A Person can belong to only one StudyGroup
     @ManyToOne
-    @JoinColumn(name = "study_group_id")
+    @JoinColumn(name = "study_id", nullable = false)  // Foreign key column
     private StudyGroup studyGroup;
 
 

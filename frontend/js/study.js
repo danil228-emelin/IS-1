@@ -1,4 +1,4 @@
-const backendUrl = 'http://localhost:8080/api/people';
+const backendUrl = 'http://localhost:8080/api/groups';
 
 
 function renderTable(data) {
@@ -6,9 +6,9 @@ function renderTable(data) {
     const totalPages = data.totalPages;  // Number of pages in the result
     const totalElements = data.totalElements;  // Total number of items
     const currentPage = data.pageable.pageNumber;  // Current page number
-    console.log("totalPages "+totalPages);
-    console.log("totalElements "+totalElements);
-    console.log("currentPage "+currentPage);
+    console.log("totalPages " + totalPages);
+    console.log("totalElements " + totalElements);
+    console.log("currentPage " + currentPage);
     // Get the table element where you want to display the data
     const tableBody = document.getElementById('tableBody');
 
@@ -16,53 +16,42 @@ function renderTable(data) {
     tableBody.innerHTML = '';
 
     // Loop through the content (people) and add rows to the table
-    content.forEach(person => {
+    content.forEach(group => {
         const row = document.createElement('tr');
 
         const cell1 = document.createElement('td');
-        console.log(person)
-        cell1.textContent = person.id;
+        console.log(group)
+        cell1.textContent = group.id;
         row.appendChild(cell1);
 
         const cell2 = document.createElement('td');
-        cell2.textContent = person.name;
+        cell2.textContent = group.study_name;
         row.appendChild(cell2);
 
         const cell3 = document.createElement('td');
-        cell3.textContent = person.coordinates.coordinate_x;
+        cell3.textContent = group.coordinates.coordinate_x;
         row.appendChild(cell3);
 
         const cell4 = document.createElement('td');
-        cell4.textContent = person.coordinates.coordinate_y;
+        cell4.textContent = group.coordinates.coordinate_y;
         row.appendChild(cell4);
 
+
         const cell5 = document.createElement('td');
-        cell5.textContent = person.eye_color;
+        cell5.textContent = group.study_students_count;
         row.appendChild(cell5);
 
         const cell6 = document.createElement('td');
-        cell6.textContent = person.location.location_x;
-        row.appendChild(cell6);
+        cell6.textContent = group.study_form_of_education;
+        row.appendChild(cell6)
 
         const cell7 = document.createElement('td');
-        cell7.textContent = person.location.location_y;
-        row.appendChild(cell7);
+        cell7.textContent = group.study_average_mark;
+        row.appendChild(cell7)
 
         const cell8 = document.createElement('td');
-        cell8.textContent = person.location.location_x;
-        row.appendChild(cell8);
-
-        const cell9 = document.createElement('td');
-        cell9.textContent = person.weight;
-        row.appendChild(cell9);
-
-        const cell10 = document.createElement('td');
-        cell10.textContent = person.nationality;
-        row.appendChild(cell10)
-
-        const cell11 = document.createElement('td');
-        cell11.textContent = person.admin_edit_allowed;
-        row.appendChild(cell11)
+        cell8.textContent = group.study_semester_enum;
+        row.appendChild(cell8)
 
         // Append the row to the table body
         tableBody.appendChild(row);
@@ -84,7 +73,7 @@ async function sendRequestOnPageLoad() {
     }
     try {
         // Make the request with the Authorization header
-        const response = await fetch(`${backendUrl}`, {
+        const response = await fetch(`${backendUrl}/getAllGroups`, {
             method: 'GET', // Adjust the HTTP method as needed
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -119,28 +108,28 @@ const span = document.getElementsByClassName("close")[0];
 const form = document.getElementById("study_group_model_form");
 const tableBody = document.getElementById("tableBody");
 
-btn.onclick = function() {
+btn.onclick = function () {
     modal.style.display = "block";
 }
 
-span.onclick = function() {
+span.onclick = function () {
     modal.style.display = "none";
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
 
 
-form.onsubmit = function(event) {
+form.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
-    const id = document.getElementById("id").value;
     const name = document.getElementById("name").value;
     const coord_x = document.getElementById("coord_x").value;
     const coord_y = document.getElementById("coord_y").value;
     const amount_of_students = document.getElementById("amount_of_students").value;
+    const average = document.getElementById("average_mark").value;
     const study_semester_enum = document.getElementById("study_semester_enum").value;
     const study_form_education = document.getElementById("study_form_education").value;
 
@@ -157,7 +146,7 @@ form.onsubmit = function(event) {
         return;
     }
 
-    fetch(`${backendUrl}/group`, {
+    fetch(`${backendUrl}/create`, {
         method: 'POST',
         headers: {
             "Access-Control-Allow-Origin": "*",
@@ -170,14 +159,34 @@ form.onsubmit = function(event) {
                 "coordinate_x": coord_x,
                 "coordinate_y": coord_y
             },
-            "study_students_count": amount_of_students,
-            "study_semester_enum": study_semester_enum,
-            "study_form_of_education": study_form_education
+            "students_count": amount_of_students,
+            "average_mark": average,
+            "semester_enum": study_semester_enum,
+            "form_of_education": study_form_education
         })
     })
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            const newRow = document.createElement("tr");
+            // Populate the new row with the data (e.g., name, students_count, average_mark, etc.)
+            newRow.innerHTML = `
+                <td>${data.id}</td>
+                <td>${data.study_name}</td>
+                <td>${data.coordinates.coordinate_x}</td>
+                <td>${data.coordinates.coordinate_y}</td>                
+                <td>${data.study_students_count}</td>
+                <td>${data.study_semester_enum}</td>
+                <td>${data.study_average_mark}</td>
+                <td>${data.study_form_of_education}</td>
+            `;
+            tableBody.appendChild(newRow);
+
+            // Optionally clear the form after submission
+            form.reset();
+
+            // Optionally, show a success message or modal
+            alert("Study group created successfully!");
         })
         .catch((error) => {
             console.error('Error:', error);

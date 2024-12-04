@@ -1,20 +1,44 @@
 package itmo.is.mapper.domain;
 
+import itmo.is.dto.domain.CoordinatesDto;
 import itmo.is.dto.domain.StudyGroupDto;
-import itmo.is.model.domain.Coordinates;
+import itmo.is.dto.domain.request.CreateStudyGroupRequest;
 import itmo.is.model.domain.FormOfEducation;
 import itmo.is.model.domain.Semester;
 import itmo.is.model.domain.StudyGroup;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-04T18:07:25+0300",
+    date = "2024-12-04T20:27:18+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component
 public class StudyGroupMapperImpl implements StudyGroupMapper {
+
+    @Autowired
+    private CoordinatesMapper coordinatesMapper;
+
+    @Override
+    public StudyGroup toEntity(StudyGroupDto dto) {
+        if ( dto == null ) {
+            return null;
+        }
+
+        StudyGroup studyGroup = new StudyGroup();
+
+        studyGroup.setId( (long) dto.id() );
+        studyGroup.setName( dto.name() );
+        studyGroup.setStudentsCount( dto.studentsCount() );
+        studyGroup.setFormOfEducation( dto.formOfEducation() );
+        studyGroup.setAverageMark( dto.averageMark() );
+        studyGroup.setSemesterEnum( dto.semesterEnum() );
+        studyGroup.setCoordinates( coordinatesMapper.toEntity( dto.coordinates() ) );
+
+        return studyGroup;
+    }
 
     @Override
     public StudyGroupDto toDto(StudyGroup entity) {
@@ -22,8 +46,9 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
             return null;
         }
 
-        Integer id = null;
+        int id = 0;
         String name = null;
+        CoordinatesDto coordinates = null;
         long studentsCount = 0L;
         FormOfEducation formOfEducation = null;
         double averageMark = 0.0d;
@@ -33,12 +58,11 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
             id = entity.getId().intValue();
         }
         name = entity.getName();
+        coordinates = coordinatesMapper.toDto( entity.getCoordinates() );
         studentsCount = entity.getStudentsCount();
         formOfEducation = entity.getFormOfEducation();
         averageMark = entity.getAverageMark();
         semesterEnum = entity.getSemesterEnum();
-
-        Coordinates coordinates = null;
 
         StudyGroupDto studyGroupDto = new StudyGroupDto( id, name, coordinates, studentsCount, formOfEducation, averageMark, semesterEnum );
 
@@ -46,21 +70,19 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
     }
 
     @Override
-    public StudyGroup toEntity(StudyGroupDto createGroupRequest) {
-        if ( createGroupRequest == null ) {
+    public StudyGroup toEntity(CreateStudyGroupRequest createStudyGroupRequest) {
+        if ( createStudyGroupRequest == null ) {
             return null;
         }
 
         StudyGroup studyGroup = new StudyGroup();
 
-        if ( createGroupRequest.id() != null ) {
-            studyGroup.setId( createGroupRequest.id().longValue() );
-        }
-        studyGroup.setName( createGroupRequest.name() );
-        studyGroup.setStudentsCount( createGroupRequest.studentsCount() );
-        studyGroup.setFormOfEducation( createGroupRequest.formOfEducation() );
-        studyGroup.setAverageMark( createGroupRequest.averageMark() );
-        studyGroup.setSemesterEnum( createGroupRequest.semesterEnum() );
+        studyGroup.setName( createStudyGroupRequest.name() );
+        studyGroup.setStudentsCount( createStudyGroupRequest.studentsCount() );
+        studyGroup.setFormOfEducation( createStudyGroupRequest.formOfEducation() );
+        studyGroup.setAverageMark( createStudyGroupRequest.averageMark() );
+        studyGroup.setSemesterEnum( createStudyGroupRequest.semesterEnum() );
+        studyGroup.setCoordinates( coordinatesMapper.toEntity( createStudyGroupRequest.coordinates() ) );
 
         return studyGroup;
     }

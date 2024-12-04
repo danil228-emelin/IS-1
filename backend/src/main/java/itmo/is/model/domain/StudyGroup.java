@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -22,11 +23,10 @@ public class StudyGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "study_group_id", nullable = false)
     private Long id;
 
     // One StudyGroup can have many People
-    @OneToMany(mappedBy = "studyGroup")
+    @OneToMany(mappedBy = "studyGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Person> persons;
 
     @NotNull
@@ -52,4 +52,7 @@ public class StudyGroup {
     @Column(name = "semester_enum", nullable = false)
     private Semester semesterEnum;
 
+    @NotNull
+    @Embedded
+    private Coordinates coordinates;
 }
