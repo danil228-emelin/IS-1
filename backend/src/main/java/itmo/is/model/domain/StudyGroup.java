@@ -1,0 +1,55 @@
+package itmo.is.model.domain;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.List;
+
+@Entity
+@Table(name = "study_group")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudyGroup {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "study_group_id", nullable = false)
+    private Long id;
+
+    // One StudyGroup can have many People
+    @OneToMany(mappedBy = "studyGroup")
+    private List<Person> persons;
+
+    @NotNull
+    @NotEmpty
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @CreationTimestamp
+    @Column(name = "creation_date", updatable = false, nullable = false)
+    private java.time.ZonedDateTime creationDate;
+    @Min(1)
+    @Column(name = "students_count", nullable = false)
+    private long studentsCount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "form_of_education", nullable = false)
+    private FormOfEducation formOfEducation;
+    @Min(1)
+    @Column(name = "average_mark", nullable = false)
+    private double averageMark;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "semester_enum", nullable = false)
+    private Semester semesterEnum;
+
+}
