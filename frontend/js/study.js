@@ -25,7 +25,7 @@ function renderTable(data) {
         row.appendChild(cell1);
 
         const cell2 = document.createElement('td');
-        cell2.textContent = group.study_name;
+        cell2.textContent = group.name;
         row.appendChild(cell2);
 
         const cell3 = document.createElement('td');
@@ -38,19 +38,19 @@ function renderTable(data) {
 
 
         const cell5 = document.createElement('td');
-        cell5.textContent = group.study_students_count;
+        cell5.textContent = group.students_count;
         row.appendChild(cell5);
 
         const cell6 = document.createElement('td');
-        cell6.textContent = group.study_form_of_education;
+        cell6.textContent = group.form_of_education;
         row.appendChild(cell6)
 
         const cell7 = document.createElement('td');
-        cell7.textContent = group.study_average_mark;
+        cell7.textContent = group.average_mark;
         row.appendChild(cell7)
 
         const cell8 = document.createElement('td');
-        cell8.textContent = group.study_semester_enum;
+        cell8.textContent = group.semester_enum;
         row.appendChild(cell8)
 
         // Append the row to the table body
@@ -174,13 +174,13 @@ form.onsubmit = function (event) {
             // Populate the new row with the data (e.g., name, students_count, average_mark, etc.)
             newRow.innerHTML = `
                 <td>${data.id}</td>
-                <td>${data.study_name}</td>
+                <td>${data.name}</td>
                 <td>${data.coordinates.coordinate_x}</td>
                 <td>${data.coordinates.coordinate_y}</td>                
-                <td>${data.study_students_count}</td>
-                <td>${data.study_semester_enum}</td>
-                <td>${data.study_average_mark}</td>
-                <td>${data.study_form_of_education}</td>
+                <td>${data.students_count}</td>
+                <td>${data.semester_enum}</td>
+                <td>${data.average_mark}</td>
+                <td>${data.form_of_education}</td>
             `;
             tableBody.appendChild(newRow);
 
@@ -259,4 +259,65 @@ form_person.onsubmit = function (event) {
         });
 
     modal_person.style.display = "none";
+}
+
+
+
+// Modal handling
+const modal_average = document.getElementById("average_mark_model");
+const btn_average = document.getElementById("averageMarkBtn");
+const form_average = document.getElementById("average_mark_form");
+
+btn_average.onclick = function () {
+    modal_average.style.display = "block";
+}
+
+span.onclick = function () {
+    modal_average.style.display = "none";
+}
+
+window.onclick = function (event) {
+    if (event.target == modal_average) {
+        modal_average.style.display = "none";
+    }
+}
+
+
+
+
+form_average.onsubmit = function (event) {
+    event.preventDefault(); // Prevent form submission
+    const average = document.getElementById("average_mark_less").value;
+
+
+    const newRow = document.createElement("tr");
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.error('No token found in localStorage');
+        alert('You must log in first!');
+        // Optionally, redirect to the login page
+        window.location.href = '../index.html';
+        return;
+    }
+
+    fetch(`${backendUrl}/count-by-average-mark?averageMark=${average}`, {
+        method: 'GET',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert("Amount of groups   "+data.count)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    modal_average.style.display = "none";
 }

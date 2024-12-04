@@ -10,4 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
     Page<StudyGroup> findAllByNameContaining(@NotNull String name, @NotNull Pageable pageable);
 
+    long countStudyGroupsByAverageMarkGreaterThanEqual(@NotNull Double averageMark);
+
+
 }

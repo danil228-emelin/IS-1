@@ -4,6 +4,7 @@ import itmo.is.dto.domain.PersonDto;
 import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.dto.domain.request.AddPersonToGroupRequest;
 import itmo.is.dto.domain.request.CreateStudyGroupRequest;
+import itmo.is.dto.domain.response.CountResponse;
 import itmo.is.model.domain.StudyGroup;
 import itmo.is.service.domain.GroupService;
 import itmo.is.service.domain.PersonService;
@@ -70,5 +71,13 @@ public class StudyGroupController {
         Page<StudyGroupDto> people = studyGroupService.findAllGroups(name, pageable);
         log.info("getAllGroups method finished");
         return ResponseEntity.ok(people);
+    }
+
+    @GetMapping("/count-by-average-mark")
+    @CrossOrigin(origins = "*")
+
+    public ResponseEntity<CountResponse> countGroupsByAverageMark(@RequestParam("averageMark") Double averageMark) {
+        CountResponse response = studyGroupService.countGroupsByLessEqualAverageMark(averageMark);
+        return ResponseEntity.ok(response);
     }
 }

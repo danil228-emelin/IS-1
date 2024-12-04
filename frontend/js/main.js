@@ -57,7 +57,7 @@ const backendUrl = 'http://localhost:8080/api/people';
         row.appendChild(cell9);
 
         const cell10 = document.createElement('td');
-        cell10.textContent = person.study_id;
+        cell10.textContent = person.study_id.id;
         row.appendChild(cell10)
 
         const cell11 = document.createElement('td');

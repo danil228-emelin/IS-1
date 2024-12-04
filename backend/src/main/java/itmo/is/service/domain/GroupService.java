@@ -2,6 +2,7 @@ package itmo.is.service.domain;
 
 import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.dto.domain.request.CreateStudyGroupRequest;
+import itmo.is.dto.domain.response.CountResponse;
 import itmo.is.mapper.domain.StudyGroupMapper;
 import itmo.is.model.domain.Person;
 import itmo.is.model.domain.StudyGroup;
@@ -66,5 +67,9 @@ public class GroupService {
     public StudyGroup findStudyGroupById(Long id) {
         return studyGroupRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("StudyGroup not found with id: " + id));
+    }
+
+    public CountResponse countGroupsByLessEqualAverageMark(Double averageMark) {
+        return new CountResponse(studyGroupRepository.countStudyGroupsByAverageMarkLessThanEqual(averageMark));
     }
 }

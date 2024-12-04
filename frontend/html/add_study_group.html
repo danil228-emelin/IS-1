@@ -162,6 +162,7 @@
   <div class="button-container">
     <button id="Create_study_group_btn">Create Group</button>
     <button id="Add_person_in_group_btn">Add Person in Group</button> <!-- New button added -->
+    <button id="averageMarkBtn">Average Mark</button> <!-- New button added -->
     <button id="goBackBtn" class="go-back-button" onclick="window.location.href='main.html'">Go Back</button>
     <button id="goFurtherBtn" class="go-further-button">Go Further</button>
   </div>
@@ -215,6 +216,20 @@
     </form>
   </div>
 </div>
+
+
+<!-- Modal for Adding Person in Group -->
+<div id="average_mark_model" class="modal">
+  <div class="modal-content">
+    <span class="close" id="average_mark_Close">&times;</span>
+    <h3>Add Person to Group</h3>
+    <form id="average_mark_form">
+      <input type="number" id="average_mark_less" class="input-field" placeholder="Enter Average Mark" required>
+      <button type="submit" class="input-field">Add Person</button>
+    </form>
+  </div>
+</div>
+
 
 <script src="../js/study.js"></script>
 </body>
