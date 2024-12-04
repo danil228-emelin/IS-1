@@ -4,6 +4,7 @@ import itmo.is.dto.authentication.UserDto;
 import itmo.is.dto.domain.CoordinatesDto;
 import itmo.is.dto.domain.LocationDto;
 import itmo.is.dto.domain.PersonDto;
+import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
 import itmo.is.model.domain.Color;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-04T20:27:17+0300",
+    date = "2024-12-05T00:10:52+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component
@@ -42,6 +43,7 @@ public class PersonMapperImpl implements PersonMapper {
         person.setId( dto.id() );
         person.setName( dto.name() );
         person.setCoordinates( coordinatesMapper.toEntity( dto.coordinates() ) );
+        person.setStudyGroup( studyGroupMapper.toEntity( dto.studyGroup() ) );
         person.setEyeColor( dto.eyeColor() );
         person.setLocation( locationMapper.toEntity( dto.location() ) );
         person.setWeight( dto.weight() );
@@ -58,6 +60,7 @@ public class PersonMapperImpl implements PersonMapper {
 
         int id = 0;
         String name = null;
+        StudyGroupDto studyGroup = null;
         CoordinatesDto coordinates = null;
         Color eyeColor = null;
         LocationDto location = null;
@@ -68,6 +71,7 @@ public class PersonMapperImpl implements PersonMapper {
 
         id = entity.getId();
         name = entity.getName();
+        studyGroup = studyGroupMapper.toDto( entity.getStudyGroup() );
         coordinates = coordinatesMapper.toDto( entity.getCoordinates() );
         eyeColor = entity.getEyeColor();
         location = locationMapper.toDto( entity.getLocation() );
@@ -76,7 +80,7 @@ public class PersonMapperImpl implements PersonMapper {
         owner = userToUserDto( entity.getOwner() );
         adminEditAllowed = entity.isAdminEditAllowed();
 
-        PersonDto personDto = new PersonDto( id, name, coordinates, eyeColor, location, weight, nationality, owner, adminEditAllowed );
+        PersonDto personDto = new PersonDto( id, name, studyGroup, coordinates, eyeColor, location, weight, nationality, owner, adminEditAllowed );
 
         return personDto;
     }
@@ -92,7 +96,6 @@ public class PersonMapperImpl implements PersonMapper {
         person.setAdminEditAllowed( createPersonRequest.adminEditAllowed() );
         person.setName( createPersonRequest.name() );
         person.setCoordinates( coordinatesMapper.toEntity( createPersonRequest.coordinates() ) );
-        person.setStudyGroup( studyGroupMapper.toEntity( createPersonRequest.studyGroup() ) );
         person.setEyeColor( createPersonRequest.eyeColor() );
         person.setLocation( locationMapper.toEntity( createPersonRequest.location() ) );
         person.setWeight( createPersonRequest.weight() );

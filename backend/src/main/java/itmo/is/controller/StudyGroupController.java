@@ -6,6 +6,8 @@ import itmo.is.dto.domain.request.AddPersonToGroupRequest;
 import itmo.is.dto.domain.request.CreateStudyGroupRequest;
 import itmo.is.model.domain.StudyGroup;
 import itmo.is.service.domain.GroupService;
+import itmo.is.service.domain.PersonService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,16 +19,30 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/groups")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class StudyGroupController {
-    @Autowired
+
     private GroupService studyGroupService;
 
-    @PostMapping("/{groupId}/addPerson")
-    public ResponseEntity<String> addPersonToGroup(@PathVariable Long groupId, @RequestBody AddPersonToGroupRequest request) {
+    @Autowired
+    public StudyGroupController(GroupService studyGroupService) {
+        this.studyGroupService = studyGroupService;
+    }
+
+    public void setStudyGroupService(GroupService studyGroupService) {
+        this.studyGroupService = studyGroupService;
+    }
+
+    @PostMapping("/addPerson")
+    public ResponseEntity<String> addPersonToGroup(@RequestBody AddPersonToGroupRequest request) {
         try {
-            studyGroupService.addPersonToGroup(groupId, request.person_id());
+            log.info("addPersonToGroup methods start");
+            studyGroupService.addPersonToGroup(request.group_id(), request.person_id());
+            log.info("addPersonToGroup finish successfully");
             return ResponseEntity.ok("Person added to the group successfully");
         } catch (RuntimeException e) {
+            log.info("addPersonToGroup finish with error");
+            log.error(e.getMessage());
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }

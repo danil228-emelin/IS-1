@@ -7,7 +7,7 @@ import itmo.is.mapper.EntityMapper;
 import itmo.is.model.domain.Person;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {CoordinatesMapper.class, LocationMapper.class, StudyGroupMapper.class})
+@Mapper(componentModel = "spring", uses = {CoordinatesMapper.class, LocationMapper.class,StudyGroupMapper.class})
 public interface PersonMapper extends EntityMapper<PersonDto, Person> {
 
     Person toEntity(CreatePersonRequest createPersonRequest);

@@ -161,8 +161,9 @@
   <!-- Buttons in a horizontal line -->
   <div class="button-container">
     <button id="Create_study_group_btn">Create Group</button>
+    <button id="Add_person_in_group_btn">Add Person in Group</button> <!-- New button added -->
     <button id="goBackBtn" class="go-back-button" onclick="window.location.href='main.html'">Go Back</button>
-    <button id="goFurtherBtn"  class="go-further-button">Go Further</button>
+    <button id="goFurtherBtn" class="go-further-button">Go Further</button>
   </div>
 
   <table>
@@ -184,12 +185,11 @@
   </table>
 </div>
 
-
 <!-- Modal for Creating group -->
 <div id="study_group_model" class="modal">
   <div class="modal-content">
     <span class="close" id="updateClose">&times;</span>
-    <h3>Update Person</h3>
+    <h3>Create Study Group</h3>
     <form id="study_group_model_form">
       <input type="text" id="name" class="input-field" placeholder="Enter name" required>
       <input type="number" id="coord_x" class="input-field" placeholder="Enter coordinate x" required>
@@ -199,6 +199,19 @@
       <input type="text" id="study_semester_enum" class="input-field" placeholder="Enter semester">
       <input type="text" id="study_form_education" class="input-field" placeholder="Enter Form of education">
       <button type="submit" class="input-field">Create Study Group</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal for Adding Person in Group -->
+<div id="add_person_model" class="modal">
+  <div class="modal-content">
+    <span class="close" id="addPersonClose">&times;</span>
+    <h3>Add Person to Group</h3>
+    <form id="add_person_form">
+      <input type="number" id="person_id" class="input-field" placeholder="Enter person id" required>
+      <input type="number" id="group_id" class="input-field" placeholder="Enter group id" required>
+      <button type="submit" class="input-field">Add Person</button>
     </form>
   </div>
 </div>

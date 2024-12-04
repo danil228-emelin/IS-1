@@ -57,12 +57,16 @@ const backendUrl = 'http://localhost:8080/api/people';
         row.appendChild(cell9);
 
         const cell10 = document.createElement('td');
-        cell10.textContent = person.nationality;
+        cell10.textContent = person.study_id;
         row.appendChild(cell10)
 
         const cell11 = document.createElement('td');
-        cell11.textContent = person.admin_edit_allowed;
+        cell11.textContent = person.nationality;
         row.appendChild(cell11)
+
+        const cell12 = document.createElement('td');
+        cell12.textContent = person.admin_edit_allowed;
+        row.appendChild(cell12)
 
         // Append the row to the table body
         tableBody.appendChild(row);
@@ -184,6 +188,7 @@ form.onsubmit = function(event) {
     const loc_y = document.getElementById("loc_y").value;
     const loc_z = document.getElementById("loc_z").value;
     const weight = document.getElementById("weight").value;
+    const study_group = document.getElementById("study_id").value;
     const nationality = document.getElementById("nationality").value;
     const admin_allowed = document.getElementById("admin_allowed").value;
 
@@ -208,6 +213,7 @@ form.onsubmit = function(event) {
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
+            "study_id":study_group,
             "name": name,
             "coordinates": {
                 "coordinate_x": coord_x,
@@ -220,6 +226,7 @@ form.onsubmit = function(event) {
                 "location_z": loc_z
             },
             "weight": weight,
+            "study_group":study_group,
             "nationality": nationality,
             "admin_edit_allowed": admin_allowed === true
         })
@@ -251,6 +258,7 @@ form_update.onsubmit = function(event) {
     const weight = document.getElementById("update_weight").value;
     const nationality = document.getElementById("update_nationality").value;
     const admin_allowed = document.getElementById("update_admin_allowed").value;
+    const study_group = document.getElementById("update_study_id").value;
 
     const newRow = document.createElement("tr");
     const rowNumber = tableBody.rows.length + 1;
@@ -273,6 +281,7 @@ form_update.onsubmit = function(event) {
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
+            "study_id":"300",
             "name": name,
             "coordinates": {
                 "coordinate_x": coord_x,
@@ -285,9 +294,9 @@ form_update.onsubmit = function(event) {
                 "location_z": loc_z
             },
             "weight": weight,
+            "study_group":study_group,
             "nationality": nationality,
             "admin_edit_allowed": admin_allowed === true,
-            "study_groups": ""
         })
     })
         .then(response => response.json())

@@ -123,6 +123,8 @@ window.onclick = function (event) {
 }
 
 
+
+
 form.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
     const name = document.getElementById("name").value;
@@ -194,4 +196,67 @@ form.onsubmit = function (event) {
 
     modal.style.display = "none";
 
+}
+
+// Modal handling
+const modal_person = document.getElementById("add_person_model");
+const btn_person = document.getElementById("Add_person_in_group_btn");
+const form_person = document.getElementById("add_person_form");
+
+btn_person.onclick = function () {
+    modal_person.style.display = "block";
+}
+
+span.onclick = function () {
+    modal_person.style.display = "none";
+}
+
+window.onclick = function (event) {
+    if (event.target == modal_person) {
+        modal_person.style.display = "none";
+    }
+}
+
+
+
+
+form_person.onsubmit = function (event) {
+    event.preventDefault(); // Prevent form submission
+    const person_id = document.getElementById("person_id").value;
+    const group_id = document.getElementById("group_id").value;
+
+    const newRow = document.createElement("tr");
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.error('No token found in localStorage');
+        alert('You must log in first!');
+        // Optionally, redirect to the login page
+        window.location.href = '../index.html';
+        return;
+    }
+
+    fetch(`${backendUrl}/addPerson`, {
+        method: 'POST',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "group_id":group_id,
+            "person_id":person_id
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert("Student added in group successfully!");
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    modal_person.style.display = "none";
 }

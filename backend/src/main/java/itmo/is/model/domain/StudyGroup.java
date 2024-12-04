@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.ZonedDateTime;
@@ -19,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class StudyGroup {
 
     @Id
@@ -26,7 +24,7 @@ public class StudyGroup {
     private Long id;
 
     // One StudyGroup can have many People
-    @OneToMany(mappedBy = "studyGroup", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "studyGroup")
     private List<Person> persons;
 
     @NotNull
@@ -49,7 +47,7 @@ public class StudyGroup {
     private double averageMark;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "semester_enum", nullable = false)
+        @Column(name = "semester_enum", nullable = false)
     private Semester semesterEnum;
 
     @NotNull

@@ -23,9 +23,7 @@ public class Person extends OwnedEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
-    @NotEmpty
-    @Column(name = "name", nullable = false,insertable=false, updatable=false)
+    @Column(name = "name")
     private String name;
 
     @NotNull
@@ -33,7 +31,7 @@ public class Person extends OwnedEntity {
     private Coordinates coordinates;
 
     @ManyToOne
-    @JoinColumn(name = "study_id", nullable = false)  // Foreign key column
+    @JoinColumn(name = "study_id")  // Foreign key column
     private StudyGroup studyGroup;
 
 
@@ -52,4 +50,11 @@ public class Person extends OwnedEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "nationality", nullable = true)
     private Country nationality;
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "studyGroup=" + studyGroup.getId() +
+                '}';
+    }
 }

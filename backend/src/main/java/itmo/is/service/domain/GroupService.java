@@ -9,17 +9,29 @@ import itmo.is.repository.PersonRepository;
 import itmo.is.repository.StudyGroupRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class GroupService {
     private final StudyGroupRepository studyGroupRepository;
     private final StudyGroupMapper studyGroupMapper;
     private PersonRepository personRepository;
+
+    @Autowired
+    public GroupService(StudyGroupRepository studyGroupRepository, StudyGroupMapper studyGroupMapper, PersonRepository personRepository) {
+        this.studyGroupRepository = studyGroupRepository;
+        this.studyGroupMapper = studyGroupMapper;
+        this.personRepository = personRepository;
+    }
+
+
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     public void addPersonToGroup(Long groupId, Integer personId) {
         // Validate the group and person existence
@@ -50,5 +62,9 @@ public class GroupService {
             return studyGroupRepository.findAllByNameContaining(name, pageable).map(studyGroupMapper::toDto);
         }
         return studyGroupRepository.findAll(pageable).map(studyGroupMapper::toDto);
+    }
+    public StudyGroup findStudyGroupById(Long id) {
+        return studyGroupRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("StudyGroup not found with id: " + id));
     }
 }

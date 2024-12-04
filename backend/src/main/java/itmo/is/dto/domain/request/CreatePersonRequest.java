@@ -12,8 +12,9 @@ public record CreatePersonRequest(
         @JsonProperty(value = "name", required = true)
         String name,
 
-        @JsonProperty(value = "study_groups", required = false)
-        StudyGroupDto studyGroup,
+        @JsonProperty(value = "study_id", required = true)
+        Long study_id,
+
         @JsonProperty(value = "coordinates", required = true)
         CoordinatesDto coordinates,
 

@@ -8,9 +8,12 @@ import itmo.is.dto.domain.response.PercentageResponse;
 import itmo.is.mapper.domain.PersonMapper;
 import itmo.is.model.domain.Color;
 import itmo.is.model.domain.Country;
+import itmo.is.model.domain.Person;
+import itmo.is.model.domain.StudyGroup;
 import itmo.is.repository.PersonRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,10 +22,13 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class PersonService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+    private final GroupService groupService;
+
 
     public Page<PersonDto> findAllPeople(String name, Pageable pageable) {
         if (name != null && !name.isEmpty()) {
@@ -36,7 +42,12 @@ public class PersonService {
     }
 
     public PersonDto createPerson(CreatePersonRequest request) {
-        return personMapper.toDto(personRepository.save(personMapper.toEntity(request)));
+        Person newOne = personMapper.toEntity(request);
+        StudyGroup studyGroup = groupService.findStudyGroupById(request.study_id());
+        newOne.setStudyGroup(studyGroup);
+        log.info("FOUND GROUP");
+        log.info(studyGroup.toString());
+        return personMapper.toDto(personRepository.save(newOne));
     }
 
     public PersonDto updatePerson(int id, UpdatePersonRequest request) {

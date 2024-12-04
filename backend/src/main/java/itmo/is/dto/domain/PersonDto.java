@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import itmo.is.dto.authentication.UserDto;
 import itmo.is.model.domain.Color;
 import itmo.is.model.domain.Country;
+import itmo.is.model.domain.StudyGroup;
 
 public record PersonDto(
         @JsonProperty("id")
@@ -11,6 +12,10 @@ public record PersonDto(
 
         @JsonProperty("name")
         String name,
+
+        @JsonProperty("study_id")
+        StudyGroupDto studyGroup,
+
 
         @JsonProperty("coordinates")
         CoordinatesDto coordinates,
