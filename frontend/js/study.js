@@ -270,7 +270,7 @@ form_person.onsubmit = function (event) {
         })
     })
         .then(response => response.json())
-        .then(data => {
+        .then(()=> {
             alert("Student added in group successfully!");
         })
         .catch((error) => {

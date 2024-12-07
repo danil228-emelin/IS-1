@@ -26,7 +26,7 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     long countByEyeColorEquals(@NotNull Color color);
 
-    @Query("DELETE FROM Person p WHERE p.studyGroup.id = :studyGroupId")
+    @Query("DELETE FROM Person p WHERE p.studyGroup.id = :studyGroupId and p.id!=p.studyGroup.groupAdmin")
     @Modifying
     @Transactional
     void deleteAllByStudyGroupId(Integer studyGroupId);

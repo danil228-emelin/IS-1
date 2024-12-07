@@ -377,8 +377,7 @@ form_delete.onsubmit = function (event) {
         },
         body: {}
     })
-        .then(response => response.json())
-        .then(data => {
+        .then(() => {
             location.reload();
         })
         .catch((error) => {
