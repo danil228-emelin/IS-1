@@ -29,7 +29,6 @@ import java.util.Optional;
 public class PersonService {
     private final PersonRepository personRepository;
     private final StudyGroupRepository studyGroupRepository;
-
     private final PersonMapper personMapper;
 
 
@@ -64,11 +63,25 @@ public class PersonService {
 
     public PersonDto updatePerson(int id, UpdatePersonRequest request) {
         var person = personMapper.toEntity(request);
+        Optional<StudyGroup> studyGroup = studyGroupRepository.findById((long) request.group_id());
+        Optional<Person> personBD = personRepository.findById(id);
+        if (personBD.isPresent()){
+            Person p = personBD.get();
+            p.getStudyGroup().setStudentsCount(p.getStudyGroup().getStudentsCount()-1);
+            studyGroupRepository.save(p.getStudyGroup());
+        }
+        if (studyGroup.isPresent()) {
+            StudyGroup s = studyGroup.get();
+            s.setStudentsCount(s.getStudentsCount() + 1);
+            studyGroupRepository.save(s);
+            person.setStudyGroup(s);
+        }
         person.setId(id);
         return personMapper.toDto(personRepository.save(person));
     }
 
     public void deletePerson(int id) {
+
         personRepository.deleteById(id);
     }
 
@@ -108,5 +121,9 @@ public class PersonService {
         double percentage = (double) countByEyeColor / (double) total * 100;
 
         return new PercentageResponse(percentage);
+    }
+
+    public void deleteElementsFromGroup(Integer groupId) {
+        personRepository.deleteAllByStudyGroupId(groupId);
     }
 }

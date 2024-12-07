@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -93,5 +94,11 @@ public class StudyGroupController {
     public ResponseEntity<CountResponse> countGroupsByAdminId(@RequestParam("groupId") Integer groupId) {
         CountResponse response = studyGroupService.countStudyGroupByGroupAdminGreaterThanEqual(groupId);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<String>deleteAll(@RequestParam("groupId") Integer groupId) {
+       studyGroupService.deleteElementsFromGroup(groupId);
+        return ResponseEntity.ok("delete people from group");
     }
 }

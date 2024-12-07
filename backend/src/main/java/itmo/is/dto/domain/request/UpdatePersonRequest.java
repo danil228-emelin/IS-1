@@ -6,8 +6,6 @@ import itmo.is.dto.domain.LocationDto;
 import itmo.is.model.domain.Color;
 import itmo.is.model.domain.Country;
 
-import java.time.LocalDate;
-
 public record UpdatePersonRequest(
         @JsonProperty(value = "name", required = true)
         String name,
@@ -24,6 +22,7 @@ public record UpdatePersonRequest(
         Integer weight,
 
         @JsonProperty(value = "nationality", required = false)
-        Country nationality
-) {
+        Country nationality,
+        @JsonProperty(value = "group_id", required = false)
+        int group_id) {
 }

@@ -1,250 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #de8c11 0%, #18ecda 100%);
-      color: #333;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-      font-size: 24px;
-    }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
-      padding: 12px;
-      text-align: center;
-    }
-    th {
-      background-color: #4CAF50;
-      color: white;
-      font-size: 16px;
-    }
-    td {
-      background-color: #f9f9f9;
-    }
-    .empty-message {
-      text-align: center;
-      font-size: 18px;
-      color: #666;
-      margin-top: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #de8c11 0%, #18ecda 100%);
+            color: #333;
+        }
 
-    /* Button container styling */
-    .button-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;  /* Adds space between buttons */
-      margin: 20px 0;
-    }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+        }
 
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      width: 150px;  /* Set a fixed width for uniform buttons */
-    }
-    button:hover {
-      background-color: #45a049;
-    }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0);
-      background-color: rgba(0,0,0,0.4);
-      padding-top: 60px;
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 30px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    .input-field {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    .go-back-button {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-    .go-further-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
 
-    .go-further-button:hover {
-      background-color: #45a049;
-    }
-  </style>
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        /* Button container styling */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Adds space between buttons */
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 150px; /* Set a fixed width for uniform buttons */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .go-back-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .go-further-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .go-further-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>Data Table</h2>
+    <h2>Data Table</h2>
 
-  <!-- Buttons in a horizontal line -->
-  <div class="button-container">
-    <button id="Create_study_group_btn">Create Group</button>
-    <button id="Add_person_in_group_btn">Add Person in Group</button> <!-- New button added -->
-    <button id="averageMarkBtn">Average Mark</button> <!-- New button added -->
-    <button id="goBackBtn" class="go-back-button" onclick="window.location.href='main.html'">Go Back</button>
-    <button id="minGroupAdminBtn">Min Group Admin</button> <!-- New Button -->
-    <button id="moreThanAdminIdBtn">Compare Group Admin</button> <!-- New Button -->
+    <!-- Buttons in a horizontal line -->
+    <div class="button-container">
+        <button id="Create_study_group_btn">Create Group</button>
+        <button id="Add_person_in_group_btn">Add Person in Group</button> <!-- New button added -->
+        <button id="averageMarkBtn">Average Mark</button> <!-- New button added -->
+        <button id="goBackBtn" class="go-back-button" onclick="window.location.href='main.html'">Go Back</button>
+        <button id="minGroupAdminBtn">Min Group Admin</button> <!-- New Button -->
+        <button id="moreThanAdminIdBtn">Compare Group Admin</button> <!-- New Button -->
+        <button id="deleteAll_btn">Expel</button> <!-- New Button -->
 
-    <button id="goFurtherBtn" class="go-further-button">Go Further</button>
-  </div>
 
-  <table>
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>coord (x)</th>
-      <th>coord (y)</th>
-      <th>students count</th>
-      <th>form of education</th>
-      <th>average mark</th>
-      <th>admin id</th>
-      <th>semester</th>
-    </tr>
-    </thead>
-    <tbody id="tableBody">
-    <!-- Rows will be dynamically added here -->
-    </tbody>
-  </table>
+        <button id="goFurtherBtn" class="go-further-button">Go Further</button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>coord (x)</th>
+            <th>coord (y)</th>
+            <th>students count</th>
+            <th>form of education</th>
+            <th>average mark</th>
+            <th>admin id</th>
+            <th>semester</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        <!-- Rows will be dynamically added here -->
+        </tbody>
+    </table>
 </div>
 
 <!-- Modal for Creating group -->
 <div id="study_group_model" class="modal">
-  <div class="modal-content">
-    <span class="close" id="updateClose">&times;</span>
-    <h3>Create Study Group</h3>
-    <form id="study_group_model_form">
-      <input type="text" id="name" class="input-field" placeholder="Enter name" required>
-      <input type="number" id="coord_x" class="input-field" placeholder="Enter coordinate x" required>
-      <input type="number" id="coord_y" class="input-field" placeholder="Enter coordinate y" required>
-      <input type="text" id="average_mark" class="input-field" placeholder="Enter Average Mark">
-      <input type="number" id="admin_id" class="input-field" placeholder="Enter Admin id" required>
-      <input type="number" min="1" id="amount_of_students" class="input-field" placeholder="Enter amount of students" required>
-      <input type="text" id="study_semester_enum" class="input-field" placeholder="Enter semester">
-      <input type="text" id="study_form_education" class="input-field" placeholder="Enter Form of education">
-      <button type="submit" class="input-field">Create Study Group</button>
-    </form>
-  </div>
+    <div class="modal-content">
+        <span class="close" id="updateClose">&times;</span>
+        <h3>Create Study Group</h3>
+        <form id="study_group_model_form">
+            <input type="text" id="name" class="input-field" placeholder="Enter name" required>
+            <input type="number" id="coord_x" class="input-field" placeholder="Enter coordinate x" required>
+            <input type="number" id="coord_y" class="input-field" placeholder="Enter coordinate y" required>
+            <input type="text" id="average_mark" class="input-field" placeholder="Enter Average Mark">
+            <input type="number" id="admin_id" class="input-field" placeholder="Enter Admin id" required>
+            <input type="number" min="1" id="amount_of_students" class="input-field"
+                   placeholder="Enter amount of students" required>
+            <input type="text" id="study_semester_enum" class="input-field" placeholder="Enter semester">
+            <input type="text" id="study_form_education" class="input-field" placeholder="Enter Form of education">
+            <button type="submit" class="input-field">Create Study Group</button>
+        </form>
+    </div>
 </div>
 
 <!-- Modal for Adding Person in Group -->
 <div id="add_person_model" class="modal">
-  <div class="modal-content">
-    <span class="close" id="addPersonClose">&times;</span>
-    <h3>Add Person to Group</h3>
-    <form id="add_person_form">
-      <input type="number" id="person_id" class="input-field" placeholder="Enter person id" required>
-      <input type="number" id="group_id" class="input-field" placeholder="Enter group id" required>
-      <button type="submit" class="input-field">Add Person</button>
-    </form>
-  </div>
+    <div class="modal-content">
+        <span class="close" id="addPersonClose">&times;</span>
+        <h3>Add Person to Group</h3>
+        <form id="add_person_form">
+            <input type="number" id="person_id" class="input-field" placeholder="Enter person id" required>
+            <input type="number" id="group_id" class="input-field" placeholder="Enter group id" required>
+            <button type="submit" class="input-field">Add Person</button>
+        </form>
+    </div>
 </div>
 
 
 <!-- Modal for Adding Person in Group -->
 <div id="average_mark_model" class="modal">
-  <div class="modal-content">
-    <span class="close" id="average_mark_Close">&times;</span>
-    <h3>Add Person to Group</h3>
-    <form id="average_mark_form">
-      <input type="number" id="average_mark_less" class="input-field" placeholder="Enter Average Mark" required>
-      <button type="submit" class="input-field">Add Person</button>
-    </form>
-  </div>
+    <div class="modal-content">
+        <span class="close" id="average_mark_Close">&times;</span>
+        <h3>Add Person to Group</h3>
+        <form id="average_mark_form">
+            <input type="number" id="average_mark_less" class="input-field" placeholder="Enter Average Mark" required>
+            <button type="submit" class="input-field">Add Person</button>
+        </form>
+    </div>
 </div>
 
 
 <div id="moreId_mark_model" class="modal">
-  <div class="modal-content">
-    <span class="close" id="moreId_mark_Close">&times;</span>
-    <h3>Add Person to Group</h3>
-    <form id="moreId_mark_form">
-      <input type="number" id="moreId_mark_less" class="input-field" placeholder="Enter Admin id" required>
-      <button type="submit" class="input-field">Add Person</button>
-    </form>
-  </div>
+    <div class="modal-content">
+        <span class="close" id="moreId_mark_Close">&times;</span>
+        <h3>Add Person to Group</h3>
+        <form id="moreId_mark_form">
+            <input type="number" id="moreId_mark_less" class="input-field" placeholder="Enter Admin id" required>
+            <button type="submit" class="input-field">Add Person</button>
+        </form>
+    </div>
+</div>
+
+
+<div id="delete_model" class="modal">
+    <div class="modal-content">
+        <span class="close" id="delete_close">&times;</span>
+        <h3>Add Person to Group</h3>
+        <form id="delete_form">
+            <input type="number" id="group_id_delete" class="input-field" placeholder="Enter Group id" required>
+            <button type="submit" class="input-field">Delete</button>
+        </form>
+    </div>
 </div>
 
 <script src="../js/study.js"></script>

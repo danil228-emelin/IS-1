@@ -80,7 +80,7 @@ public class PersonRestController {
     public ResponseEntity<Void> deletePerson(@PathVariable int id) {
         log.info("deletePerson method started");
         personService.deletePerson(id);
-        log.info("deletePerson method started");
+        log.info("deletePerson method finished");
         return ResponseEntity.noContent().build();
     }
 

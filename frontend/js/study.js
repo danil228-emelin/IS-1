@@ -48,12 +48,12 @@ function renderTable(data) {
         const cell7 = document.createElement('td');
         cell7.textContent = group.average_mark;
         row.appendChild(cell7)
-        cell8=""
+        cell8 = ""
         if (group.hasOwnProperty('admin') && group.admin !== null) {
-             cell8 = document.createElement('td');
+            cell8 = document.createElement('td');
             cell8.textContent = group.admin;
-        }else{
-             cell8 = document.createElement('td');
+        } else {
+            cell8 = document.createElement('td');
             cell8.textContent = "No admin";
         }
         row.appendChild(cell8)
@@ -271,7 +271,6 @@ form_person.onsubmit = function (event) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
             alert("Student added in group successfully!");
         })
         .catch((error) => {
@@ -431,4 +430,59 @@ form_admin.onsubmit = function (event) {
         });
 
     modal_average.style.display = "none";
+}
+
+
+// Modal handling
+const modal_delete = document.getElementById("delete_model");
+const btn_delete = document.getElementById("deleteAll_btn");
+const form_delete = document.getElementById("delete_form");
+
+btn_delete.onclick = function () {
+    modal_delete.style.display = "block";
+}
+
+span.onclick = function () {
+    modal_delete.style.display = "none";
+}
+
+window.onclick = function (event) {
+    if (event.target == modal_delete) {
+        modal_delete.style.display = "none";
+    }
+}
+
+
+form_delete.onsubmit = function (event) {
+    event.preventDefault(); // Prevent form submission
+    const group_id = document.getElementById("group_id_delete").value;
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.error('No token found in localStorage');
+        alert('You must log in first!');
+        // Optionally, redirect to the login page
+        window.location.href = '../index.html';
+        return;
+    }
+
+    fetch(`${backendUrl}/delete-all?groupId=${group_id}`, {
+        method: 'DELETE',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert("Amount of groups   " + data.count)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    modal_delete.style.display = "none";
 }

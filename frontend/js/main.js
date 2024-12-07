@@ -275,7 +275,7 @@ form.onsubmit = function (event) {
             // Optionally clear the form after submission
             form.reset();
             // Optionally, show a success message or modal
-            alert("Study group created successfully!");
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -323,7 +323,7 @@ form_update.onsubmit = function (event) {
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-            "study_id": "300",
+            "study_id": study_group,
             "name": name,
             "coordinates": {
                 "coordinate_x": coord_x,
@@ -336,14 +336,15 @@ form_update.onsubmit = function (event) {
                 "location_z": loc_z
             },
             "weight": weight,
-            "study_group": study_group,
             "nationality": nationality,
+            "group_id":study_group,
             "admin_edit_allowed": admin_allowed === true,
         })
     })
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -355,7 +356,7 @@ form_update.onsubmit = function (event) {
 
 form_delete.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
-    const id = document.getElementById("update_id").value;
+    const id = document.getElementById("delete_id").value;
 
     const token = localStorage.getItem('token');
 
@@ -378,7 +379,7 @@ form_delete.onsubmit = function (event) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);

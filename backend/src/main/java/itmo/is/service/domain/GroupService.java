@@ -99,5 +99,7 @@ public class GroupService {
     public CountResponse countStudyGroupByGroupAdminGreaterThanEqual(Integer group_id) {
         return new CountResponse(studyGroupRepository.countStudyGroupByGroupAdminGreaterThanEqual(group_id));
     }
-
+    public void deleteElementsFromGroup(Integer groupId) {
+        personRepository.deleteAllByStudyGroupId(groupId);
+    }
 }
