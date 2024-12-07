@@ -9,7 +9,10 @@ import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
 import itmo.is.model.domain.Color;
 import itmo.is.model.domain.Country;
+import itmo.is.model.domain.FormOfEducation;
 import itmo.is.model.domain.Person;
+import itmo.is.model.domain.Semester;
+import itmo.is.model.domain.StudyGroup;
 import itmo.is.model.security.User;
 import javax.annotation.processing.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-05T00:10:52+0300",
+    date = "2024-12-07T17:47:10+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component
@@ -27,8 +30,6 @@ public class PersonMapperImpl implements PersonMapper {
     private CoordinatesMapper coordinatesMapper;
     @Autowired
     private LocationMapper locationMapper;
-    @Autowired
-    private StudyGroupMapper studyGroupMapper;
 
     @Override
     public Person toEntity(PersonDto dto) {
@@ -43,7 +44,7 @@ public class PersonMapperImpl implements PersonMapper {
         person.setId( dto.id() );
         person.setName( dto.name() );
         person.setCoordinates( coordinatesMapper.toEntity( dto.coordinates() ) );
-        person.setStudyGroup( studyGroupMapper.toEntity( dto.studyGroup() ) );
+        person.setStudyGroup( studyGroupDtoToStudyGroup( dto.studyGroup() ) );
         person.setEyeColor( dto.eyeColor() );
         person.setLocation( locationMapper.toEntity( dto.location() ) );
         person.setWeight( dto.weight() );
@@ -71,7 +72,7 @@ public class PersonMapperImpl implements PersonMapper {
 
         id = entity.getId();
         name = entity.getName();
-        studyGroup = studyGroupMapper.toDto( entity.getStudyGroup() );
+        studyGroup = studyGroupToStudyGroupDto( entity.getStudyGroup() );
         coordinates = coordinatesMapper.toDto( entity.getCoordinates() );
         eyeColor = entity.getEyeColor();
         location = locationMapper.toDto( entity.getLocation() );
@@ -133,6 +134,55 @@ public class PersonMapperImpl implements PersonMapper {
         user.username( userDto.username() );
 
         return user.build();
+    }
+
+    protected StudyGroup studyGroupDtoToStudyGroup(StudyGroupDto studyGroupDto) {
+        if ( studyGroupDto == null ) {
+            return null;
+        }
+
+        StudyGroup studyGroup = new StudyGroup();
+
+        studyGroup.setGroupAdmin( studyGroupDto.groupAdmin() );
+        studyGroup.setId( (long) studyGroupDto.id() );
+        studyGroup.setName( studyGroupDto.name() );
+        studyGroup.setStudentsCount( studyGroupDto.studentsCount() );
+        studyGroup.setFormOfEducation( studyGroupDto.formOfEducation() );
+        studyGroup.setAverageMark( studyGroupDto.averageMark() );
+        studyGroup.setSemesterEnum( studyGroupDto.semesterEnum() );
+        studyGroup.setCoordinates( coordinatesMapper.toEntity( studyGroupDto.coordinates() ) );
+
+        return studyGroup;
+    }
+
+    protected StudyGroupDto studyGroupToStudyGroupDto(StudyGroup studyGroup) {
+        if ( studyGroup == null ) {
+            return null;
+        }
+
+        int id = 0;
+        String name = null;
+        CoordinatesDto coordinates = null;
+        long studentsCount = 0L;
+        int groupAdmin = 0;
+        FormOfEducation formOfEducation = null;
+        double averageMark = 0.0d;
+        Semester semesterEnum = null;
+
+        if ( studyGroup.getId() != null ) {
+            id = studyGroup.getId().intValue();
+        }
+        name = studyGroup.getName();
+        coordinates = coordinatesMapper.toDto( studyGroup.getCoordinates() );
+        studentsCount = studyGroup.getStudentsCount();
+        groupAdmin = studyGroup.getGroupAdmin();
+        formOfEducation = studyGroup.getFormOfEducation();
+        averageMark = studyGroup.getAverageMark();
+        semesterEnum = studyGroup.getSemesterEnum();
+
+        StudyGroupDto studyGroupDto = new StudyGroupDto( id, name, coordinates, studentsCount, groupAdmin, formOfEducation, averageMark, semesterEnum );
+
+        return studyGroupDto;
     }
 
     protected UserDto userToUserDto(User user) {

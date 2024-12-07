@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-05T00:10:52+0300",
+    date = "2024-12-07T17:47:10+0300",
     comments = "version: 1.6.2, compiler: javac, environment: Java 17.0.9 (Amazon.com Inc.)"
 )
 @Component
@@ -29,6 +29,7 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
 
         StudyGroup studyGroup = new StudyGroup();
 
+        studyGroup.setGroupAdmin( dto.groupAdmin() );
         studyGroup.setId( (long) dto.id() );
         studyGroup.setName( dto.name() );
         studyGroup.setStudentsCount( dto.studentsCount() );
@@ -50,6 +51,7 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
         String name = null;
         CoordinatesDto coordinates = null;
         long studentsCount = 0L;
+        int groupAdmin = 0;
         FormOfEducation formOfEducation = null;
         double averageMark = 0.0d;
         Semester semesterEnum = null;
@@ -60,11 +62,12 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
         name = entity.getName();
         coordinates = coordinatesMapper.toDto( entity.getCoordinates() );
         studentsCount = entity.getStudentsCount();
+        groupAdmin = entity.getGroupAdmin();
         formOfEducation = entity.getFormOfEducation();
         averageMark = entity.getAverageMark();
         semesterEnum = entity.getSemesterEnum();
 
-        StudyGroupDto studyGroupDto = new StudyGroupDto( id, name, coordinates, studentsCount, formOfEducation, averageMark, semesterEnum );
+        StudyGroupDto studyGroupDto = new StudyGroupDto( id, name, coordinates, studentsCount, groupAdmin, formOfEducation, averageMark, semesterEnum );
 
         return studyGroupDto;
     }
@@ -77,6 +80,7 @@ public class StudyGroupMapperImpl implements StudyGroupMapper {
 
         StudyGroup studyGroup = new StudyGroup();
 
+        studyGroup.setGroupAdmin( createStudyGroupRequest.groupAdmin() );
         studyGroup.setName( createStudyGroupRequest.name() );
         studyGroup.setStudentsCount( createStudyGroupRequest.studentsCount() );
         studyGroup.setFormOfEducation( createStudyGroupRequest.formOfEducation() );

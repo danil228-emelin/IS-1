@@ -11,6 +11,7 @@ import itmo.is.model.domain.Country;
 import itmo.is.model.domain.Person;
 import itmo.is.model.domain.StudyGroup;
 import itmo.is.repository.PersonRepository;
+import itmo.is.repository.StudyGroupRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonService {
     private final PersonRepository personRepository;
+    private final StudyGroupRepository studyGroupRepository;
+
     private final PersonMapper personMapper;
-    private final GroupService groupService;
 
 
     public Page<PersonDto> findAllPeople(String name, Pageable pageable) {
@@ -41,12 +43,14 @@ public class PersonService {
         return personRepository.findById(id).map(personMapper::toDto).orElseThrow();
     }
 
+    public Person findPersonByIdNorDto(int id) {
+        return personRepository.findById(id).orElseThrow();
+    }
+
     public PersonDto createPerson(CreatePersonRequest request) {
         Person newOne = personMapper.toEntity(request);
-        StudyGroup studyGroup = groupService.findStudyGroupById(request.study_id());
-        newOne.setStudyGroup(studyGroup);
-        log.info("FOUND GROUP");
-        log.info(studyGroup.toString());
+        studyGroupRepository.findById(request.study_id()).ifPresent(
+                newOne::setStudyGroup);
         return personMapper.toDto(personRepository.save(newOne));
     }
 

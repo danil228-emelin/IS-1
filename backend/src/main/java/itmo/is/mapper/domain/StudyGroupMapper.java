@@ -6,8 +6,10 @@ import itmo.is.mapper.EntityMapper;
 import itmo.is.model.domain.StudyGroup;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring",uses = {CoordinatesMapper.class})
+@Mapper(componentModel = "spring", uses = {CoordinatesMapper.class,})
 
 public interface StudyGroupMapper extends EntityMapper<StudyGroupDto, StudyGroup> {
     StudyGroup toEntity(CreateStudyGroupRequest createStudyGroupRequest);
+
+
 }

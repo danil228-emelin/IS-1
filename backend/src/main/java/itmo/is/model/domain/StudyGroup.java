@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -26,6 +25,11 @@ public class StudyGroup {
     // One StudyGroup can have many People
     @OneToMany(mappedBy = "studyGroup")
     private List<Person> persons;
+
+    // One StudyGroup has one responsible Person
+    @NotNull
+    @Column(name = "group_id", nullable = false)
+    private int groupAdmin;
 
     @NotNull
     @NotEmpty
@@ -47,10 +51,18 @@ public class StudyGroup {
     private double averageMark;
 
     @Enumerated(EnumType.STRING)
-        @Column(name = "semester_enum", nullable = false)
+    @Column(name = "semester_enum", nullable = false)
     private Semester semesterEnum;
 
     @NotNull
     @Embedded
     private Coordinates coordinates;
+
+    public int getGroupAdmin() {
+        return groupAdmin;
+    }
+
+    public void setGroupAdmin(int groupAdmin) {
+        this.groupAdmin = groupAdmin;
+    }
 }

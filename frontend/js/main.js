@@ -1,16 +1,16 @@
 const backendUrl = 'http://localhost:8080/api/people';
 
+tableBody = document.getElementById('tableBody');
 
-    function renderTable(data) {
+function renderTable(data) {
     const content = data.content;  // This is an array of PersonDto objects
     const totalPages = data.totalPages;  // Number of pages in the result
     const totalElements = data.totalElements;  // Total number of items
     const currentPage = data.pageable.pageNumber;  // Current page number
-    console.log("totalPages "+totalPages);
-    console.log("totalElements "+totalElements);
-    console.log("currentPage "+currentPage);
-        // Get the table element where you want to display the data
-    const tableBody = document.getElementById('tableBody');
+    console.log("totalPages " + totalPages);
+    console.log("totalElements " + totalElements);
+    console.log("currentPage " + currentPage);
+    // Get the table element where you want to display the data
 
     // Clear the previous table data (if any)
     tableBody.innerHTML = '';
@@ -57,7 +57,12 @@ const backendUrl = 'http://localhost:8080/api/people';
         row.appendChild(cell9);
 
         const cell10 = document.createElement('td');
-        cell10.textContent = person.study_id.id;
+        if (data.hasOwnProperty('study_id') && data.study_id !== null) {
+            cell10.textContent = person.study_id.id;
+
+        } else {
+            cell10.textContent = "no group";
+        }
         row.appendChild(cell10)
 
         const cell11 = document.createElement('td');
@@ -121,17 +126,16 @@ const modal = document.getElementById("addPersonModal");
 const btn = document.getElementById("addPersonBtn");
 const span = document.getElementsByClassName("close")[0];
 const form = document.getElementById("addPersonForm");
-const tableBody = document.getElementById("tableBody");
 
-btn.onclick = function() {
+btn.onclick = function () {
     modal.style.display = "block";
 }
 
-span.onclick = function() {
+span.onclick = function () {
     modal.style.display = "none";
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -143,15 +147,15 @@ const btn_update = document.getElementById("updatePersonBtn");
 const span_update = document.getElementsByClassName("close")[0];
 const form_update = document.getElementById("updatePersonForm");
 
-btn_update.onclick = function() {
+btn_update.onclick = function () {
     modal_update.style.display = "block";
 }
 
-span_update.onclick = function() {
+span_update.onclick = function () {
     modal_update.style.display = "none";
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal_update) {
         modal_update.style.display = "none";
     }
@@ -162,22 +166,22 @@ const modal_delete = document.getElementById("deletePersonModal");
 const btn_delete = document.getElementById("deletePersonBtn");
 const form_delete = document.getElementById("deletePersonForm");
 
-btn_delete.onclick = function() {
+btn_delete.onclick = function () {
     modal_delete.style.display = "block";
 }
 
-span_update.onclick = function() {
+span_update.onclick = function () {
     modal_delete.style.display = "none";
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal_delete) {
         modal_delete.style.display = "none";
     }
 }
 
 
-form.onsubmit = function(event) {
+form.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
 
     const name = document.getElementById("name").value;
@@ -213,7 +217,7 @@ form.onsubmit = function(event) {
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-            "study_id":study_group,
+            "study_id": study_group,
             "name": name,
             "coordinates": {
                 "coordinate_x": coord_x,
@@ -221,12 +225,12 @@ form.onsubmit = function(event) {
             },
             "eye_color": eye_color,
             "location": {
-                "location_x": loc_x ,
+                "location_x": loc_x,
                 "location_y": loc_y,
                 "location_z": loc_z
             },
             "weight": weight,
-            "study_group":study_group,
+            //"study_group":study_group,
             "nationality": nationality,
             "admin_edit_allowed": admin_allowed === true
         })
@@ -236,7 +240,8 @@ form.onsubmit = function(event) {
             console.log('Success:', data);
             const newRow = document.createElement("tr");
             // Populate the new row with the data (e.g., name, students_count, average_mark, etc.)
-            newRow.innerHTML = `
+            if (data.hasOwnProperty('study_id') && data.study_id !== null) {
+                newRow.innerHTML = `
                 <td>${data.id}</td>
                 <td>${data.name}</td>
                 <td>${data.coordinates.coordinate_x}</td>
@@ -250,6 +255,22 @@ form.onsubmit = function(event) {
                 <td>${data.nationality}</td>
                 <td>${data.admin_edit_allowed}</td>
             `;
+            } else {
+                newRow.innerHTML = `
+                <td>${data.id}</td>
+                <td>${data.name}</td>
+                <td>${data.coordinates.coordinate_x}</td>
+                <td>${data.coordinates.coordinate_y}</td>                
+                <td>${data.eye_color}</td>
+                <td>${data.location.location_x}</td>
+                <td>${data.location.location_y}</td>
+                <td>${data.location.location_z}</td>
+                <td>${data.weight}</td>
+                <td>no group</td>
+                <td>${data.nationality}</td>
+                <td>${data.admin_edit_allowed}</td>
+            `;
+            }
             tableBody.appendChild(newRow);
             // Optionally clear the form after submission
             form.reset();
@@ -260,12 +281,12 @@ form.onsubmit = function(event) {
             console.error('Error:', error);
         });
 
-modal.style.display = "none";
+    modal.style.display = "none";
 
 }
 
 
-form_update.onsubmit = function(event) {
+form_update.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
     const id = document.getElementById("update_id").value;
 
@@ -302,7 +323,7 @@ form_update.onsubmit = function(event) {
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-            "study_id":"300",
+            "study_id": "300",
             "name": name,
             "coordinates": {
                 "coordinate_x": coord_x,
@@ -310,12 +331,12 @@ form_update.onsubmit = function(event) {
             },
             "eye_color": eye_color,
             "location": {
-                "location_x": loc_x ,
+                "location_x": loc_x,
                 "location_y": loc_y,
                 "location_z": loc_z
             },
             "weight": weight,
-            "study_group":study_group,
+            "study_group": study_group,
             "nationality": nationality,
             "admin_edit_allowed": admin_allowed === true,
         })
@@ -332,7 +353,7 @@ form_update.onsubmit = function(event) {
 
 }
 
-form_delete.onsubmit = function(event) {
+form_delete.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
     const id = document.getElementById("update_id").value;
 

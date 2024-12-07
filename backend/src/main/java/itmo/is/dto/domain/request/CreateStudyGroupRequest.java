@@ -21,9 +21,14 @@ public record CreateStudyGroupRequest(
 
      double averageMark,
 
+
+    @JsonProperty(value = "admin", required = true)
+    int groupAdmin,
+
     @JsonProperty(value = "semester_enum", required = true)
 
      Semester semesterEnum)
 
 {
+
 }

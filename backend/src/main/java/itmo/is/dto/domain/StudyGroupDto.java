@@ -18,6 +18,8 @@ public record StudyGroupDto(
         @JsonProperty("students_count")
         long studentsCount,
 
+        @JsonProperty("admin")
+        int groupAdmin,
         @JsonProperty("form_of_education")
         FormOfEducation formOfEducation,
         @JsonProperty("average_mark")
@@ -27,19 +29,4 @@ public record StudyGroupDto(
         @JsonProperty("semester_enum")
         Semester semesterEnum
 ) {
-    public StudyGroupDto(int id,
-                         String name,
-                         CoordinatesDto coordinates,
-                         long studentsCount,
-                         FormOfEducation formOfEducation,
-                         double averageMark,
-                         Semester semesterEnum) {
-        this.id = id;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.studentsCount = studentsCount;
-        this.formOfEducation = formOfEducation;
-        this.averageMark = averageMark;
-        this.semesterEnum = semesterEnum;
-    }
 }

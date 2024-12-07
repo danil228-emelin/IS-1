@@ -48,10 +48,19 @@ function renderTable(data) {
         const cell7 = document.createElement('td');
         cell7.textContent = group.average_mark;
         row.appendChild(cell7)
-
-        const cell8 = document.createElement('td');
-        cell8.textContent = group.semester_enum;
+        cell8=""
+        if (group.hasOwnProperty('admin') && group.admin !== null) {
+             cell8 = document.createElement('td');
+            cell8.textContent = group.admin;
+        }else{
+             cell8 = document.createElement('td');
+            cell8.textContent = "No admin";
+        }
         row.appendChild(cell8)
+
+        const cell9 = document.createElement('td');
+        cell9.textContent = group.semester_enum;
+        row.appendChild(cell9)
 
         // Append the row to the table body
         tableBody.appendChild(row);
@@ -123,8 +132,6 @@ window.onclick = function (event) {
 }
 
 
-
-
 form.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
     const name = document.getElementById("name").value;
@@ -137,7 +144,7 @@ form.onsubmit = function (event) {
 
     const newRow = document.createElement("tr");
     const rowNumber = tableBody.rows.length + 1;
-
+    const admin = document.getElementById("admin_id").value;
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -162,6 +169,7 @@ form.onsubmit = function (event) {
                 "coordinate_y": coord_y
             },
             "students_count": amount_of_students,
+            "admin": admin,
             "average_mark": average,
             "semester_enum": study_semester_enum,
             "form_of_education": study_form_education
@@ -171,8 +179,8 @@ form.onsubmit = function (event) {
         .then(data => {
             console.log('Success:', data);
             const newRow = document.createElement("tr");
-            // Populate the new row with the data (e.g., name, students_count, average_mark, etc.)
-            newRow.innerHTML = `
+            if (data.hasOwnProperty('admin') && data.study_id !== null) {
+                newRow.innerHTML = `
                 <td>${data.id}</td>
                 <td>${data.name}</td>
                 <td>${data.coordinates.coordinate_x}</td>
@@ -180,8 +188,22 @@ form.onsubmit = function (event) {
                 <td>${data.students_count}</td>
                 <td>${data.semester_enum}</td>
                 <td>${data.average_mark}</td>
+                <td>${data.admin}</td>
                 <td>${data.form_of_education}</td>
             `;
+            } else {
+                newRow.innerHTML = `
+                <td>${data.id}</td>
+                <td>${data.name}</td>
+                <td>${data.coordinates.coordinate_x}</td>
+                <td>${data.coordinates.coordinate_y}</td>                
+                <td>${data.students_count}</td>
+                <td>${data.semester_enum}</td>
+                <td>${data.average_mark}</td>
+                <td>"No admin"</td>
+                <td>${data.form_of_education}</td>
+            `;
+            }
             tableBody.appendChild(newRow);
 
             // Optionally clear the form after submission
@@ -218,8 +240,6 @@ window.onclick = function (event) {
 }
 
 
-
-
 form_person.onsubmit = function (event) {
     event.preventDefault(); // Prevent form submission
     const person_id = document.getElementById("person_id").value;
@@ -245,8 +265,8 @@ form_person.onsubmit = function (event) {
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-            "group_id":group_id,
-            "person_id":person_id
+            "group_id": group_id,
+            "person_id": person_id
         })
     })
         .then(response => response.json())
@@ -260,7 +280,6 @@ form_person.onsubmit = function (event) {
 
     modal_person.style.display = "none";
 }
-
 
 
 // Modal handling
@@ -281,8 +300,6 @@ window.onclick = function (event) {
         modal_average.style.display = "none";
     }
 }
-
-
 
 
 form_average.onsubmit = function (event) {
@@ -313,7 +330,7 @@ form_average.onsubmit = function (event) {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            alert("Amount of groups   "+data.count)
+            alert("Amount of groups   " + data.count)
         })
         .catch((error) => {
             console.error('Error:', error);

@@ -3,7 +3,6 @@ package itmo.is.dto.domain.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import itmo.is.dto.domain.CoordinatesDto;
 import itmo.is.dto.domain.LocationDto;
-import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.model.domain.Color;
 import itmo.is.model.domain.Country;
 

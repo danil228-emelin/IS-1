@@ -1,15 +1,12 @@
 package itmo.is.controller;
 
 import itmo.is.dto.domain.PersonDto;
-import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
 import itmo.is.dto.domain.response.CountResponse;
 import itmo.is.dto.domain.response.PercentageResponse;
 import itmo.is.model.domain.Color;
 import itmo.is.model.domain.Country;
-import itmo.is.model.domain.StudyGroup;
-import itmo.is.service.domain.GroupService;
 import itmo.is.service.domain.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +52,6 @@ public class PersonRestController {
 
     public ResponseEntity<PersonDto> createPerson(@RequestBody CreatePersonRequest request) {
         log.info("createPerson method started");
-        log.info(String.valueOf(request.study_id()));
         PersonDto createdPerson = personService.createPerson(request);
 
         log.info("createPerson method finished");
