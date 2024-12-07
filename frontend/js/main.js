@@ -49,7 +49,7 @@ const backendUrl = 'http://localhost:8080/api/people';
         row.appendChild(cell7);
 
         const cell8 = document.createElement('td');
-        cell8.textContent = person.location.location_x;
+        cell8.textContent = person.location.location_z;
         row.appendChild(cell8);
 
         const cell9 = document.createElement('td');
@@ -234,6 +234,27 @@ form.onsubmit = function(event) {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            const newRow = document.createElement("tr");
+            // Populate the new row with the data (e.g., name, students_count, average_mark, etc.)
+            newRow.innerHTML = `
+                <td>${data.id}</td>
+                <td>${data.name}</td>
+                <td>${data.coordinates.coordinate_x}</td>
+                <td>${data.coordinates.coordinate_y}</td>                
+                <td>${data.eye_color}</td>
+                <td>${data.location.location_x}</td>
+                <td>${data.location.location_y}</td>
+                <td>${data.location.location_z}</td>
+                <td>${data.weight}</td>
+                <td>${data.study_id.id}</td>
+                <td>${data.nationality}</td>
+                <td>${data.admin_edit_allowed}</td>
+            `;
+            tableBody.appendChild(newRow);
+            // Optionally clear the form after submission
+            form.reset();
+            // Optionally, show a success message or modal
+            alert("Study group created successfully!");
         })
         .catch((error) => {
             console.error('Error:', error);
