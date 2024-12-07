@@ -1,5 +1,6 @@
 package itmo.is.service.domain;
 
+import itmo.is.dto.domain.PersonDto;
 import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.dto.domain.request.CreateStudyGroupRequest;
 import itmo.is.dto.domain.response.CountResponse;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -74,6 +76,10 @@ public class GroupService {
         return studyGroupMapper.toDto(studyGroupRepository.save(newOne));
     }
 
+    public PersonDto findGroupAdminWithMinimalId(){
+    Optional<Person> personOption=personRepository.findById(studyGroupRepository.findElementWithMinGroupId());
+    return  personMapper.toDto(personOption.get());
+    }
     public Page<StudyGroupDto> findAllGroups(String name, Pageable pageable) {
         if (name != null && !name.isEmpty()) {
             return studyGroupRepository.findAllByNameContaining(name, pageable).map(studyGroupMapper::toDto);

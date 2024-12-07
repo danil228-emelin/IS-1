@@ -73,6 +73,15 @@ public class StudyGroupController {
         return ResponseEntity.ok(people);
     }
 
+
+    @GetMapping("/getMinimalGroupId")
+    public ResponseEntity<PersonDto> getElementWithMinimalGroupId() {
+        log.info("getElementWithMinimalGroupId method started");
+        PersonDto personDto= studyGroupService.findGroupAdminWithMinimalId();
+        log.info("getElementWithMinimalGroupId method finished");
+        return ResponseEntity.ok(personDto);
+    }
+
     @GetMapping("/count-by-average-mark")
     @CrossOrigin(origins = "*")
 

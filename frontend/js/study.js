@@ -338,3 +338,42 @@ form_average.onsubmit = function (event) {
 
     modal_average.style.display = "none";
 }
+
+
+const btn_min = document.getElementById("minGroupAdminBtn");
+
+
+btn_min.onclick = function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.error('No token found in localStorage');
+        alert('You must log in first!');
+        // Optionally, redirect to the login page
+        window.location.href = '../index.html';
+        return;
+    }
+
+    fetch(`${backendUrl}/getMinimalGroupId`, {
+        method: 'GET',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Create the table HTML
+            let info = `Admin with minimal id   ${data.id}\n`;
+            alert(info)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    modal_average.style.display = "none";
+}
