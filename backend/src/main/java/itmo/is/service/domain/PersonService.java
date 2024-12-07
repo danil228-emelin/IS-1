@@ -65,24 +65,45 @@ public class PersonService {
         var person = personMapper.toEntity(request);
         Optional<StudyGroup> studyGroup = studyGroupRepository.findById((long) request.group_id());
         Optional<Person> personBD = personRepository.findById(id);
-        if (personBD.isPresent()){
+        if (personBD.isPresent()) {
             Person p = personBD.get();
-            p.getStudyGroup().setStudentsCount(p.getStudyGroup().getStudentsCount()-1);
-            studyGroupRepository.save(p.getStudyGroup());
+            StudyGroup psg = p.getStudyGroup();
+            if (psg.getPersons().size() == 1) {
+                person.setId(id);
+                return personMapper.toDto(person);
+            } else {
+                psg.setGroupAdmin(psg.getPersons().get(p.getStudyGroup().getPersons().size() - 1).getId());
+                psg.setStudentsCount(p.getStudyGroup().getStudentsCount() - 1);
+                studyGroupRepository.save(p.getStudyGroup());
+            }
         }
+
         if (studyGroup.isPresent()) {
             StudyGroup s = studyGroup.get();
             s.setStudentsCount(s.getStudentsCount() + 1);
             studyGroupRepository.save(s);
             person.setStudyGroup(s);
         }
-        person.setId(id);
         return personMapper.toDto(personRepository.save(person));
     }
 
     public void deletePerson(int id) {
+        Optional<Person> p = personRepository.findById(id);
+        if (p.isPresent()) {
+            Person pp = p.get();
+            if (pp.getStudyGroup().getId() == id) {
+                if (pp.getStudyGroup().getPersons().size() == 1) {
+                    return;
+                }
+                pp.getStudyGroup().setGroupAdmin(pp.getStudyGroup().getPersons().get(pp.getStudyGroup().getPersons().size() - 1).getId());
+                pp.getStudyGroup().setStudentsCount(pp.getStudyGroup().getStudentsCount() - 1);
+                studyGroupRepository.save(pp.getStudyGroup());
+                personRepository.deleteById(id);
 
-        personRepository.deleteById(id);
+            }
+        } else {
+            personRepository.deleteById(id);
+        }
     }
 
     public void allowAdminEditing(int id) {
