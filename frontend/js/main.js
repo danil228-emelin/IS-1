@@ -57,7 +57,7 @@ function renderTable(data) {
         row.appendChild(cell9);
 
         const cell10 = document.createElement('td');
-        if (data.hasOwnProperty('study_id') && data.study_id !== null) {
+        if (person.hasOwnProperty('study_id') && person.study_id !== null) {
             cell10.textContent = person.study_id.id;
 
         } else {

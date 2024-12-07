@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,8 +50,15 @@ public class PersonService {
 
     public PersonDto createPerson(CreatePersonRequest request) {
         Person newOne = personMapper.toEntity(request);
-        studyGroupRepository.findById(request.study_id()).ifPresent(
-                newOne::setStudyGroup);
+        Optional<StudyGroup> studyGroup = studyGroupRepository.findById(request.study_id());
+
+        if (studyGroup.isPresent()) {
+            StudyGroup s = studyGroup.get();
+            s.setStudentsCount(s.getStudentsCount() + 1);
+            studyGroupRepository.save(s);
+            newOne.setStudyGroup(s);
+        }
+
         return personMapper.toDto(personRepository.save(newOne));
     }
 
@@ -87,7 +95,6 @@ public class PersonService {
     public List<Country> findDistinctNationalities() {
         return personRepository.findDistinctNationalities();
     }
-
 
 
     public PercentageResponse calculatePercentageOfPeopleByEyeColor(Color color) {
