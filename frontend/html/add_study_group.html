@@ -165,6 +165,8 @@
     <button id="averageMarkBtn">Average Mark</button> <!-- New button added -->
     <button id="goBackBtn" class="go-back-button" onclick="window.location.href='main.html'">Go Back</button>
     <button id="minGroupAdminBtn">Min Group Admin</button> <!-- New Button -->
+    <button id="moreThanAdminIdBtn">Compare Group Admin</button> <!-- New Button -->
+
     <button id="goFurtherBtn" class="go-further-button">Go Further</button>
   </div>
 
@@ -233,6 +235,17 @@
   </div>
 </div>
 
+
+<div id="moreId_mark_model" class="modal">
+  <div class="modal-content">
+    <span class="close" id="moreId_mark_Close">&times;</span>
+    <h3>Add Person to Group</h3>
+    <form id="moreId_mark_form">
+      <input type="number" id="moreId_mark_less" class="input-field" placeholder="Enter Admin id" required>
+      <button type="submit" class="input-field">Add Person</button>
+    </form>
+  </div>
+</div>
 
 <script src="../js/study.js"></script>
 </body>

@@ -377,3 +377,58 @@ btn_min.onclick = function (event) {
 
     modal_average.style.display = "none";
 }
+
+
+// Modal handling
+const modal_admin = document.getElementById("moreId_mark_model");
+const btn_admin = document.getElementById("moreThanAdminIdBtn");
+const form_admin = document.getElementById("moreId_mark_form");
+
+btn_admin.onclick = function () {
+    modal_admin.style.display = "block";
+}
+
+span.onclick = function () {
+    modal_admin.style.display = "none";
+}
+
+window.onclick = function (event) {
+    if (event.target == modal_admin) {
+        modal_admin.style.display = "none";
+    }
+}
+
+
+form_admin.onsubmit = function (event) {
+    event.preventDefault(); // Prevent form submission
+    const average = document.getElementById("moreId_mark_less").value;
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.error('No token found in localStorage');
+        alert('You must log in first!');
+        // Optionally, redirect to the login page
+        window.location.href = '../index.html';
+        return;
+    }
+
+    fetch(`${backendUrl}/count-by-admin-id?groupId=${average}`, {
+        method: 'GET',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert("Amount of groups   " + data.count)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    modal_average.style.display = "none";
+}

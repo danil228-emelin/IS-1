@@ -83,10 +83,15 @@ public class StudyGroupController {
     }
 
     @GetMapping("/count-by-average-mark")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<CountResponse> countGroupsByAverageMark(@RequestParam("averageMark") Double averageMark) {
         CountResponse response = studyGroupService.countGroupsByLessEqualAverageMark(averageMark);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/count-by-admin-id")
+    public ResponseEntity<CountResponse> countGroupsByAdminId(@RequestParam("groupId") Integer groupId) {
+        CountResponse response = studyGroupService.countStudyGroupByGroupAdminGreaterThanEqual(groupId);
         return ResponseEntity.ok(response);
     }
 }

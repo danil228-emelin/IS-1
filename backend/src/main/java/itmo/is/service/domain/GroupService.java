@@ -95,4 +95,9 @@ public class GroupService {
     public CountResponse countGroupsByLessEqualAverageMark(Double averageMark) {
         return new CountResponse(studyGroupRepository.countStudyGroupsByAverageMarkLessThanEqual(averageMark));
     }
+
+    public CountResponse countStudyGroupByGroupAdminGreaterThanEqual(Integer group_id) {
+        return new CountResponse(studyGroupRepository.countStudyGroupByGroupAdminGreaterThanEqual(group_id));
+    }
+
 }

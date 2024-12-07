@@ -15,6 +15,8 @@ public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
 
     long countStudyGroupsByAverageMarkLessThanEqual(@NotNull Double averageMark);
 
+    long countStudyGroupByGroupAdminGreaterThanEqual(@NotNull Integer group_id);
+
     @Query(value = "SELECT s.groupAdmin FROM StudyGroup s ORDER BY s.groupAdmin ASC LIMIT 1")
     int findElementWithMinGroupId();
 
