@@ -153,14 +153,17 @@ form.onsubmit = function (event) {
         // Optionally, redirect to the login page
         window.location.href = '../index.html';
         return;
+    }else{
+        console.log("Create Group method")
+        console.log("token "+token)
     }
 
     fetch(`${backendUrl}/create`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
             "name": name,
@@ -255,6 +258,8 @@ form_person.onsubmit = function (event) {
         // Optionally, redirect to the login page
         window.location.href = '../index.html';
         return;
+    }else{
+        console.log("token "+token)
     }
 
     fetch(`${backendUrl}/addPerson`, {

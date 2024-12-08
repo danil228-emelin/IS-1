@@ -207,14 +207,16 @@ form.onsubmit = function (event) {
         // Optionally, redirect to the login page
         window.location.href = '../index.html';
         return;
+    }else{
+        console.log("CREATE PERSON:"+token)
     }
 
     fetch(`${backendUrl}`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
             "study_id": study_group,
@@ -232,7 +234,7 @@ form.onsubmit = function (event) {
             "weight": weight,
             //"study_group":study_group,
             "nationality": nationality,
-            "admin_edit_allowed": admin_allowed === true
+            "admin_edit_allowed": admin_allowed === "true"
         })
     })
         .then(response => response.json())
@@ -318,9 +320,9 @@ form_update.onsubmit = function (event) {
     fetch(`${backendUrl}/${id}`, {
         method: 'PUT',
         headers: {
+            'Authorization': `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
             "study_id": study_group,
@@ -338,7 +340,7 @@ form_update.onsubmit = function (event) {
             "weight": weight,
             "nationality": nationality,
             "group_id":study_group,
-            "admin_edit_allowed": admin_allowed === true,
+            "admin_edit_allowed": admin_allowed === "true"
         })
     })
         .then(response => response.json())
@@ -371,9 +373,9 @@ form_delete.onsubmit = function (event) {
     fetch(`${backendUrl}/${id}`, {
         method: 'DELETE',
         headers: {
+            'Authorization': `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
         },
         body: {}
     })

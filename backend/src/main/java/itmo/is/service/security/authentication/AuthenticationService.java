@@ -9,6 +9,7 @@ import itmo.is.model.security.Role;
 import itmo.is.model.security.User;
 import itmo.is.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -125,6 +127,7 @@ public class AuthenticationService {
 
     private JwtResponse generateJwt(User user) {
         String jwt = jwtService.generateToken(user);
+        log.info("jwt:"+jwt);
         return new JwtResponse(jwt);
     }
 }

@@ -48,6 +48,7 @@ public class PersonService {
     }
 
     public PersonDto createPerson(CreatePersonRequest request) {
+        log.info(String.valueOf(request.adminEditAllowed()));
         Person newOne = personMapper.toEntity(request);
         Optional<StudyGroup> studyGroup = studyGroupRepository.findById(request.study_id());
 
@@ -88,6 +89,7 @@ public class PersonService {
     }
 
     public void deletePerson(int id) {
+        log.info("Try Deleting fucking person without mercy "+id);
         Optional<Person> p = personRepository.findById(id);
         if (p.isPresent()) {
             Person pp = p.get();
@@ -100,9 +102,10 @@ public class PersonService {
                 studyGroupRepository.save(pp.getStudyGroup());
                 personRepository.deleteById(id);
 
+            }else {
+                log.info("Deleting fucking person without mercy");
+                personRepository.deleteById(id);
             }
-        } else {
-            personRepository.deleteById(id);
         }
     }
 

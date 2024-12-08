@@ -22,12 +22,12 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/people")
+@CrossOrigin(origins = "*", allowedHeaders = "Authorization")
 @RequiredArgsConstructor
 public class PersonRestController {
     private final PersonService personService;
 
     @GetMapping
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<Page<PersonDto>> getAllPeople(
             @RequestParam(value = "name", required = false) String name,
@@ -40,7 +40,6 @@ public class PersonRestController {
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<PersonDto> getPersonById(@PathVariable int id) {
         PersonDto person = personService.findPersonById(id);
@@ -48,7 +47,6 @@ public class PersonRestController {
     }
 
     @PostMapping
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<PersonDto> createPerson(@RequestBody CreatePersonRequest request) {
         log.info("createPerson method started");
@@ -61,7 +59,6 @@ public class PersonRestController {
 
     @PreAuthorize("@personSecurityService.hasEditRights(#id)")
     @PutMapping("/{id}")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<PersonDto> updatePerson(
             @PathVariable int id,
@@ -75,7 +72,6 @@ public class PersonRestController {
 
     @PreAuthorize("@personSecurityService.isOwner(#id)")
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<Void> deletePerson(@PathVariable int id) {
         log.info("deletePerson method started");
@@ -86,7 +82,6 @@ public class PersonRestController {
 
     @PreAuthorize("@personSecurityService.isOwner(#id)")
     @PutMapping("/{id}/allow-admin-editing")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Void> allowAdminEditing(@PathVariable int id) {
         personService.allowAdminEditing(id);
         return ResponseEntity.noContent().build();
@@ -94,7 +89,6 @@ public class PersonRestController {
 
     @PreAuthorize("@personSecurityService.isOwner(#id)")
     @PutMapping("/{id}/deny-admin-editing")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<Void> denyAdminEditing(@PathVariable int id) {
         personService.denyAdminEditing(id);
@@ -102,7 +96,6 @@ public class PersonRestController {
     }
 
     @GetMapping("/count-by-weight")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<CountResponse> countPeopleByWeight(@RequestParam Integer weight) {
         CountResponse response = personService.countPeopleByExactWeight(weight);
@@ -110,7 +103,6 @@ public class PersonRestController {
     }
 
     @GetMapping("/count-by-weight-less-than")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<CountResponse> countPeopleByWeightLessThan(@RequestParam Integer weight) {
         CountResponse response = personService.countPeopleByWeightLessThan(weight);
@@ -118,7 +110,6 @@ public class PersonRestController {
     }
 
     @GetMapping("/nationalities")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<List<Country>> getDistinctNationalities() {
         List<Country> nationalities = personService.findDistinctNationalities();
@@ -127,7 +118,6 @@ public class PersonRestController {
 
 
     @GetMapping("/percentage-by-eye-color")
-    @CrossOrigin(origins = "*")
 
     public ResponseEntity<PercentageResponse> calculatePercentageByEyeColor(@RequestParam Color color) {
         PercentageResponse response = personService.calculatePercentageOfPeopleByEyeColor(color);

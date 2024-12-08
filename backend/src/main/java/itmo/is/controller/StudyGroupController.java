@@ -5,9 +5,7 @@ import itmo.is.dto.domain.StudyGroupDto;
 import itmo.is.dto.domain.request.AddPersonToGroupRequest;
 import itmo.is.dto.domain.request.CreateStudyGroupRequest;
 import itmo.is.dto.domain.response.CountResponse;
-import itmo.is.model.domain.StudyGroup;
 import itmo.is.service.domain.GroupService;
-import itmo.is.service.domain.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequestMapping("/api/groups")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class StudyGroupController {
 
@@ -63,6 +60,7 @@ public class StudyGroupController {
             return ResponseEntity.status(400).body(null);
         }
     }
+
     @GetMapping("/getAllGroups")
     public ResponseEntity<Page<StudyGroupDto>> getAllGroups(
             @RequestParam(value = "name", required = false) String name,
@@ -78,7 +76,7 @@ public class StudyGroupController {
     @GetMapping("/getMinimalGroupId")
     public ResponseEntity<PersonDto> getElementWithMinimalGroupId() {
         log.info("getElementWithMinimalGroupId method started");
-        PersonDto personDto= studyGroupService.findGroupAdminWithMinimalId();
+        PersonDto personDto = studyGroupService.findGroupAdminWithMinimalId();
         log.info("getElementWithMinimalGroupId method finished");
         return ResponseEntity.ok(personDto);
     }
@@ -97,8 +95,9 @@ public class StudyGroupController {
     }
 
     @DeleteMapping("/delete-all")
-    public ResponseEntity<String>deleteAll(@RequestParam("groupId") Integer groupId) {
-       studyGroupService.deleteElementsFromGroup(groupId);
+    @PreAuthorize("@personSecurityService.isOwner(#groupId)")
+    public ResponseEntity<String> deleteAll(@RequestParam("groupId") Integer groupId) {
+        studyGroupService.deleteElementsFromGroup(groupId);
         return ResponseEntity.ok("delete people from group");
     }
 }
