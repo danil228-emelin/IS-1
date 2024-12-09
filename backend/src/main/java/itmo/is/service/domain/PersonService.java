@@ -48,10 +48,8 @@ public class PersonService {
     }
 
     public PersonDto createPerson(CreatePersonRequest request) {
-        log.info(String.valueOf(request.adminEditAllowed()));
         Person newOne = personMapper.toEntity(request);
         Optional<StudyGroup> studyGroup = studyGroupRepository.findById(request.study_id());
-
         if (studyGroup.isPresent()) {
             StudyGroup s = studyGroup.get();
             s.setStudentsCount(s.getStudentsCount() + 1);
@@ -64,36 +62,52 @@ public class PersonService {
 
     public PersonDto updatePerson(int id, UpdatePersonRequest request) {
         var person = personMapper.toEntity(request);
+        person.setId(id);
         Optional<StudyGroup> studyGroup = studyGroupRepository.findById((long) request.group_id());
         Optional<Person> personBD = personRepository.findById(id);
         if (personBD.isPresent()) {
             Person p = personBD.get();
             StudyGroup psg = p.getStudyGroup();
-            if (psg.getPersons().size() == 1) {
-                person.setId(id);
-                return personMapper.toDto(person);
+            if (psg == null) {
+                if (studyGroup.isPresent()) {
+                    StudyGroup s = studyGroup.get();
+                    s.setStudentsCount(s.getStudentsCount() + 1);
+                    person.setStudyGroup(s);
+                    studyGroupRepository.save(s);
+                    return personMapper.toDto(personRepository.save(person));
+                } else {
+                    person.setStudyGroup(studyGroup.get());
+                    return personMapper.toDto(personRepository.save(person));
+                }
+
             } else {
-                psg.setGroupAdmin(psg.getPersons().get(p.getStudyGroup().getPersons().size() - 1).getId());
+                if (p.getStudyGroup().getPersons().size() == 1) {
+                    person.setStudyGroup(studyGroup.get());
+                    return personMapper.toDto(personRepository.save(person));
+                }
+                if (p.getStudyGroup().getGroupAdmin() == id) {
+                    psg.setGroupAdmin(psg.getPersons().get(p.getStudyGroup().getPersons().size() - 1).getId());
+                }
+
                 psg.setStudentsCount(p.getStudyGroup().getStudentsCount() - 1);
                 studyGroupRepository.save(p.getStudyGroup());
-            }
-        }
+                StudyGroup s = studyGroup.get();
+                s.setStudentsCount(s.getStudentsCount() + 1);
+                studyGroupRepository.save(s);
+                person.setStudyGroup(s);
+                return personMapper.toDto(personRepository.save(person));
 
-        if (studyGroup.isPresent()) {
-            StudyGroup s = studyGroup.get();
-            s.setStudentsCount(s.getStudentsCount() + 1);
-            studyGroupRepository.save(s);
-            person.setStudyGroup(s);
+            }
+        } else {
+            return null;
         }
-        return personMapper.toDto(personRepository.save(person));
     }
 
     public void deletePerson(int id) {
-        log.info("Try Deleting fucking person without mercy "+id);
         Optional<Person> p = personRepository.findById(id);
         if (p.isPresent()) {
             Person pp = p.get();
-            if (pp.getStudyGroup() == null){
+            if (pp.getStudyGroup() == null) {
                 personRepository.deleteById(id);
                 return;
             }
@@ -106,8 +120,8 @@ public class PersonService {
                 studyGroupRepository.save(pp.getStudyGroup());
                 personRepository.deleteById(id);
 
-            }else {
-                log.info("Deleting fucking person without mercy");
+            } else {
+                pp.getStudyGroup().setStudentsCount(pp.getStudyGroup().getStudentsCount() - 1);
                 personRepository.deleteById(id);
             }
         }

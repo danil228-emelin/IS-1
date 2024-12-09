@@ -212,8 +212,6 @@ form.onsubmit = function (event) {
             // Optionally clear the form after submission
             form.reset();
 
-            // Optionally, show a success message or modal
-            alert("Study group created successfully!");
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -275,9 +273,6 @@ form_person.onsubmit = function (event) {
         })
     })
         .then(response => response.json())
-        .then(()=> {
-            alert("Student added in group successfully!");
-        })
         .catch((error) => {
             console.error('Error:', error);
         });
@@ -481,10 +476,6 @@ form_delete.onsubmit = function (event) {
         },
     })
         .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            alert("Amount of groups   " + data.count)
-        })
         .catch((error) => {
             console.error('Error:', error);
         });

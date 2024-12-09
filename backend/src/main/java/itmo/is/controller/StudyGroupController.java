@@ -33,6 +33,7 @@ public class StudyGroupController {
     }
 
     @PostMapping("/addPerson")
+    @PreAuthorize("@personSecurityService.isOwner(#request.group_id())")
     public ResponseEntity<String> addPersonToGroup(@RequestBody AddPersonToGroupRequest request) {
         try {
             log.info("addPersonToGroup methods start");

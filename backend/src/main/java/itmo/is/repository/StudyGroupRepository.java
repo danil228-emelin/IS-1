@@ -17,4 +17,5 @@ public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
     @Query(value = "SELECT s.groupAdmin FROM StudyGroup s ORDER BY s.groupAdmin ASC LIMIT 1")
     int findElementWithMinGroupId();
 
+    boolean existsStudyGroupByGroupAdminEquals(@NotNull Integer admin_id);
 }

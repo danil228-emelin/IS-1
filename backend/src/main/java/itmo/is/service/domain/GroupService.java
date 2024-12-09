@@ -17,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -26,12 +25,10 @@ import java.util.Optional;
 public class GroupService {
     private final StudyGroupRepository studyGroupRepository;
     private final StudyGroupMapper studyGroupMapper;
-
+    private final PersonMapper personMapper;
     private PersonRepository personRepository;
 
-    private final PersonMapper personMapper;
-
-@Autowired
+    @Autowired
     public GroupService(StudyGroupRepository studyGroupRepository, StudyGroupMapper studyGroupMapper, PersonRepository personRepository, PersonMapper personMapper) {
         this.studyGroupRepository = studyGroupRepository;
         this.studyGroupMapper = studyGroupMapper;
@@ -43,14 +40,22 @@ public class GroupService {
         this.personRepository = personRepository;
     }
 
-    public void addPersonToGroup(Long groupId, Integer personId) {
+    public void addPersonToGroup(Integer groupId, Integer personId) {
+        log.info("addPersonToGroup starts");
         // Validate the group and person existence
-        StudyGroup studyGroup = studyGroupRepository.findById(groupId)
+        StudyGroup studyGroup = studyGroupRepository.findById(Long.valueOf(groupId))
                 .orElseThrow(() -> new RuntimeException("Study group not found"));
 
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new RuntimeException("Person not found"));
 
+
+        if (studyGroupRepository.existsStudyGroupByGroupAdminEquals(personId)) {
+            log.info("Person is an admin with id "+personId);
+            log.info("addPersonToGroup ends");
+            return;
+
+        }
         // Add the person to the group
         person.setStudyGroup(studyGroup);
 
@@ -61,13 +66,14 @@ public class GroupService {
         // Save both entities
         personRepository.save(person);
         studyGroupRepository.save(studyGroup);
+        log.info("addPersonToGroup ends");
     }
 
     public StudyGroupDto createGroup(CreateStudyGroupRequest request) {
         log.info("createGroup started");
         StudyGroup newOne = studyGroupMapper.toEntity(request);
         var person = personRepository.findById(request.groupAdmin());
-        if (person.isPresent() ){
+        if (person.isPresent()) {
             newOne.setGroupAdmin(person.get().getId());
             person.get().setStudyGroup(newOne);
             personMapper.toDto(personRepository.save(person.get()));
@@ -76,10 +82,11 @@ public class GroupService {
         return studyGroupMapper.toDto(studyGroupRepository.save(newOne));
     }
 
-    public PersonDto findGroupAdminWithMinimalId(){
-    Optional<Person> personOption=personRepository.findById(studyGroupRepository.findElementWithMinGroupId());
-    return  personMapper.toDto(personOption.get());
+    public PersonDto findGroupAdminWithMinimalId() {
+        Optional<Person> personOption = personRepository.findById(studyGroupRepository.findElementWithMinGroupId());
+        return personMapper.toDto(personOption.get());
     }
+
     public Page<StudyGroupDto> findAllGroups(String name, Pageable pageable) {
         if (name != null && !name.isEmpty()) {
             return studyGroupRepository.findAllByNameContaining(name, pageable).map(studyGroupMapper::toDto);
@@ -99,6 +106,7 @@ public class GroupService {
     public CountResponse countStudyGroupByGroupAdminGreaterThanEqual(Integer group_id) {
         return new CountResponse(studyGroupRepository.countStudyGroupByGroupAdminGreaterThanEqual(group_id));
     }
+
     public void deleteElementsFromGroup(Integer groupId) {
         personRepository.deleteAllByStudyGroupId(groupId);
     }

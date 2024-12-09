@@ -239,7 +239,6 @@ form.onsubmit = function (event) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
             const newRow = document.createElement("tr");
             // Populate the new row with the data (e.g., name, students_count, average_mark, etc.)
             if (data.hasOwnProperty('study_id') && data.study_id !== null) {
