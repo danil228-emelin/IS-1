@@ -165,6 +165,10 @@
         .go-further-button:hover {
             background-color: #45a049;
         }
+        th.sortable:hover {
+            cursor: pointer;
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
@@ -189,8 +193,8 @@
     <table>
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
+            <th class="sortable" onclick="sortTable('id')">Id</th>
+            <th class="sortable" onclick="sortTable('name')">Name</th>
             <th>coord (x)</th>
             <th>coord (y)</th>
             <th>students count</th>
