@@ -389,3 +389,36 @@ form_delete.onsubmit = function (event) {
     modal_delete.style.display = "none";
 
 }
+
+function sortTable(column) {
+    const table = document.querySelector("table");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    // Determine the type of sorting (numerical or alphabetical)
+    const isNumeric = column === 'id';
+
+    // Sort rows based on the column
+    rows.sort((rowA, rowB) => {
+        const cellA = rowA.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
+        const cellB = rowB.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
+
+        // Compare the values based on type
+        if (isNumeric) {
+            return parseFloat(cellA) - parseFloat(cellB); // Sort numbers
+        } else {
+            return cellA.localeCompare(cellB); // Sort strings
+        }
+    });
+
+    // Re-append sorted rows to the table body
+    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+}
+
+// Helper function to get the column index based on the column name
+function getColumnIndex(column) {
+    if (column === 'id') {
+        return 1; // "Id" column is the first column
+    } else if (column === 'name') {
+        return 2; // "Name" column is the second column
+    }
+}

@@ -1,254 +1,258 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-      color: #333;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-      font-size: 24px;
-    }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
-      padding: 12px;
-      text-align: center;
-    }
-    th {
-      background-color: #4CAF50;
-      color: white;
-      font-size: 16px;
-    }
-    td {
-      background-color: #f9f9f9;
-    }
-    .empty-message {
-      text-align: center;
-      font-size: 18px;
-      color: #666;
-      margin-top: 20px;
-    }
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        color: #333;
+      }
+      header {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        font-size: 24px;
+      }
+      .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      table, th, td {
+        border: 1px solid #ddd;
+      }
+      th, td {
+        padding: 12px;
+        text-align: center;
+      }
+      th {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+      }
+      td {
+        background-color: #f9f9f9;
+      }
+      .empty-message {
+        text-align: center;
+        font-size: 18px;
+        color: #666;
+        margin-top: 20px;
+      }
 
-    /* Button container styling */
-    .button-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;  /* Adds space between buttons */
-      margin: 20px 0;
-    }
+      /* Button container styling */
+      .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;  /* Adds space between buttons */
+        margin: 20px 0;
+      }
 
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      width: 150px;  /* Set a fixed width for uniform buttons */
-    }
-    button:hover {
-      background-color: #45a049;
-    }
+      button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        width: 150px;  /* Set a fixed width for uniform buttons */
+      }
+      button:hover {
+        background-color: #45a049;
+      }
 
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0);
-      background-color: rgba(0,0,0,0.4);
-      padding-top: 60px;
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 30px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
 
-    .input-field {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    .go-back-button {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-    .go-further-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
+      .input-field {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .go-back-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+      .go-further-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+      th.sortable:hover {
+        cursor: pointer;
+        background-color: #ddd;
+      }
 
-    .go-further-button:hover {
-      background-color: #45a049;
-    }
-  </style>
-</head>
-<body>
+      .go-further-button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
 
-<div class="container">
-  <h2>Data Table</h2>
+  <div class="container">
+    <h2>Data Table</h2>
 
-  <!-- Buttons in a horizontal line -->
-  <div class="button-container">
-    <button id="addPersonBtn">Add Person</button>
-    <button id="updatePersonBtn">Update Person</button>
-    <button id="deletePersonBtn">Delete Person</button>
-    <button id="goBackBtn" class="go-back-button" onclick="window.location.href='../index.html'">Go Back</button>
-    <button id="goFurtherBtn" onclick="window.location.href='../html/add_study_group.html'" class="go-further-button">Go Further</button>
+    <!-- Buttons in a horizontal line -->
+    <div class="button-container">
+      <button id="addPersonBtn">Add Person</button>
+      <button id="updatePersonBtn">Update Person</button>
+      <button id="deletePersonBtn">Delete Person</button>
+      <button id="goBackBtn" class="go-back-button" onclick="window.location.href='../index.html'">Go Back</button>
+      <button id="goFurtherBtn" onclick="window.location.href='../html/add_study_group.html'" class="go-further-button">Go Further</button>
+    </div>
+
+    <table>
+      <thead>
+      <tr>
+        <th class="sortable" onclick="sortTable('id')">Id</th>
+        <th class="sortable" onclick="sortTable('name')">Name</th>
+        <th>coord (x)</th>
+        <th>coord (y)</th>
+        <th>eyeColor</th>
+        <th>loc (x)</th>
+        <th>loc (y)</th>
+        <th>loc (z)</th>
+        <th>weight</th>
+        <th>study gr</th>
+        <th>nationality</th>
+        <th>adminEditAllowed</th>
+      </tr>
+      </thead>
+      <tbody id="tableBody">
+      <!-- Rows will be dynamically added here -->
+      </tbody>
+    </table>
   </div>
 
-  <table>
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>coord (x)</th>
-      <th>coord (y)</th>
-      <th>eyeColor</th>
-      <th>loc (x)</th>
-      <th>loc (y)</th>
-      <th>loc (z)</th>
-      <th>weight</th>
-      <th>study gr</th>
-      <th>nationality</th>
-      <th>adminEditAllowed</th>
-    </tr>
-    </thead>
-    <tbody id="tableBody">
-    <!-- Rows will be dynamically added here -->
-    </tbody>
-  </table>
-</div>
+  <!-- Modal for Adding New Person -->
+  <div id="addPersonModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="addClose">&times;</span>
+      <h3>Add New Person</h3>
+      <form id="addPersonForm">
+        <input type="text" id="name" class="input-field" placeholder="Enter name" required>
+        <input type="number" id="coord_x" class="input-field" placeholder="Enter coordinate x" required>
+        <input type="number" id="coord_y" class="input-field" placeholder="Enter coordinate y" required>
+        <input type="text" id="eye_color" class="input-field" placeholder="Enter eye color">
+        <input type="number" id="loc_x" class="input-field" placeholder="Enter coordinate x of location" required>
+        <input type="number" id="loc_y" class="input-field" placeholder="Enter coordinate y of location" required>
+        <input type="number" id="loc_z" class="input-field" placeholder="Enter coordinate z of location" required>
+        <input type="number" min="1" id="weight" class="input-field" placeholder="Enter weight" required>
+        <input type="number" min="1" id="study_id" class="input-field" placeholder="Enter Study id" required>
+        <input type="text" id="nationality" class="input-field" placeholder="Enter nationality">
+        <input type="text" id="admin_allowed" class="input-field" placeholder="Enter adminAllowed" required>
 
-<!-- Modal for Adding New Person -->
-<div id="addPersonModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="addClose">&times;</span>
-    <h3>Add New Person</h3>
-    <form id="addPersonForm">
-      <input type="text" id="name" class="input-field" placeholder="Enter name" required>
-      <input type="number" id="coord_x" class="input-field" placeholder="Enter coordinate x" required>
-      <input type="number" id="coord_y" class="input-field" placeholder="Enter coordinate y" required>
-      <input type="text" id="eye_color" class="input-field" placeholder="Enter eye color">
-      <input type="number" id="loc_x" class="input-field" placeholder="Enter coordinate x of location" required>
-      <input type="number" id="loc_y" class="input-field" placeholder="Enter coordinate y of location" required>
-      <input type="number" id="loc_z" class="input-field" placeholder="Enter coordinate z of location" required>
-      <input type="number" min="1" id="weight" class="input-field" placeholder="Enter weight" required>
-      <input type="number" min="1" id="study_id" class="input-field" placeholder="Enter Study id" required>
-      <input type="text" id="nationality" class="input-field" placeholder="Enter nationality">
-      <input type="text" id="admin_allowed" class="input-field" placeholder="Enter adminAllowed" required>
-
-      <button type="submit" class="input-field">Add Person</button>
-    </form>
+        <button type="submit" class="input-field">Add Person</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- Modal for Updating Person -->
-<div id="updatePersonModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="updateClose">&times;</span>
-    <h3>Update Person</h3>
-    <form id="updatePersonForm">
-      <input type="number" id="update_id" class="input-field" placeholder="Enter id" required>
-      <input type="text" id="update_name" class="input-field" placeholder="Enter name" required>
-      <input type="number" id="update_coord_x" class="input-field" placeholder="Enter coordinate x" required>
-      <input type="number" id="update_coord_y" class="input-field" placeholder="Enter coordinate y" required>
-      <input type="text" id="update_eye_color" class="input-field" placeholder="Enter eye color">
-      <input type="number" id="update_loc_x" class="input-field" placeholder="Enter coordinate x of location" required>
-      <input type="number" id="update_loc_y" class="input-field" placeholder="Enter coordinate y of location" required>
-      <input type="number" id="update_loc_z" class="input-field" placeholder="Enter coordinate z of location" required>
-      <input type="number" min="1" id="update_weight" class="input-field" placeholder="Enter weight" required>
-      <input type="text" id="update_nationality" class="input-field" placeholder="Enter nationality">
-      <input type="number" min="1" id="update_study_id" class="input-field" placeholder="Enter Study id" required>
-      <input type="text" id="update_admin_allowed" class="input-field" placeholder="Enter adminAllowed" required>
+  <!-- Modal for Updating Person -->
+  <div id="updatePersonModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="updateClose">&times;</span>
+      <h3>Update Person</h3>
+      <form id="updatePersonForm">
+        <input type="number" id="update_id" class="input-field" placeholder="Enter id" required>
+        <input type="text" id="update_name" class="input-field" placeholder="Enter name" required>
+        <input type="number" id="update_coord_x" class="input-field" placeholder="Enter coordinate x" required>
+        <input type="number" id="update_coord_y" class="input-field" placeholder="Enter coordinate y" required>
+        <input type="text" id="update_eye_color" class="input-field" placeholder="Enter eye color">
+        <input type="number" id="update_loc_x" class="input-field" placeholder="Enter coordinate x of location" required>
+        <input type="number" id="update_loc_y" class="input-field" placeholder="Enter coordinate y of location" required>
+        <input type="number" id="update_loc_z" class="input-field" placeholder="Enter coordinate z of location" required>
+        <input type="number" min="1" id="update_weight" class="input-field" placeholder="Enter weight" required>
+        <input type="text" id="update_nationality" class="input-field" placeholder="Enter nationality">
+        <input type="number" min="1" id="update_study_id" class="input-field" placeholder="Enter Study id" required>
+        <input type="text" id="update_admin_allowed" class="input-field" placeholder="Enter adminAllowed" required>
 
-      <button type="submit" class="input-field">Update Person</button>
-    </form>
+        <button type="submit" class="input-field">Update Person</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- Modal for Deleting Person -->
-<div id="deletePersonModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="deleteClose">&times;</span>
-    <h3>Update Person</h3>
-    <form id="deletePersonForm">
-      <input type="number" id="delete_id" class="input-field" placeholder="Enter id" required>
-      <button type="submit" class="input-field">Delete Person</button>
-    </form>
+  <!-- Modal for Deleting Person -->
+  <div id="deletePersonModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="deleteClose">&times;</span>
+      <h3>Update Person</h3>
+      <form id="deletePersonForm">
+        <input type="number" id="delete_id" class="input-field" placeholder="Enter id" required>
+        <button type="submit" class="input-field">Delete Person</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<script src="../js/main.js"></script>
-</body>
-</html>
+  <script src="../js/main.js"></script>
+  </body>
+  </html>

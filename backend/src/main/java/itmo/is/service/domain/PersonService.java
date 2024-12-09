@@ -93,6 +93,10 @@ public class PersonService {
         Optional<Person> p = personRepository.findById(id);
         if (p.isPresent()) {
             Person pp = p.get();
+            if (pp.getStudyGroup() == null){
+                personRepository.deleteById(id);
+                return;
+            }
             if (pp.getStudyGroup().getId() == id) {
                 if (pp.getStudyGroup().getPersons().size() == 1) {
                     return;

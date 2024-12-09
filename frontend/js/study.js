@@ -434,7 +434,7 @@ form_admin.onsubmit = function (event) {
             console.error('Error:', error);
         });
 
-    modal_average.style.display = "none";
+    modal_admin.style.display = "none";
 }
 
 
