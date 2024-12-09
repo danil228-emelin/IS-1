@@ -303,9 +303,6 @@ form_update.onsubmit = function (event) {
     const admin_allowed = document.getElementById("update_admin_allowed").value;
     const study_group = document.getElementById("update_study_id").value;
 
-    const newRow = document.createElement("tr");
-    const rowNumber = tableBody.rows.length + 1;
-
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -344,7 +341,8 @@ form_update.onsubmit = function (event) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
+            form.reset();
+            // Optionally, show a success message or modal
             location.reload();
         })
         .catch((error) => {

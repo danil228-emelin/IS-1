@@ -66,41 +66,40 @@ public class PersonService {
         Optional<StudyGroup> studyGroup = studyGroupRepository.findById((long) request.group_id());
         Optional<Person> personBD = personRepository.findById(id);
         if (personBD.isPresent()) {
-            Person p = personBD.get();
-            StudyGroup psg = p.getStudyGroup();
-            if (psg == null) {
+            Person p_current_in_db = personBD.get();
+            StudyGroup psg_current = p_current_in_db.getStudyGroup();
+            if (psg_current == null) {
+                StudyGroup s;
                 if (studyGroup.isPresent()) {
+                    s = studyGroup.get();
+                    s.setStudentsCount(s.getStudentsCount() + 1);
+                    person.setStudyGroup(s);
+                    studyGroupRepository.save(s);
+                }
+                return personMapper.toDto(personRepository.save(person));
+            } else {
+                if (studyGroup.isPresent()) {
+                    if (psg_current.getPersons().size() == 1) {
+                        person.setStudyGroup(psg_current);
+                        return personMapper.toDto(personRepository.save(person));
+                    }
+                    if (p_current_in_db.getStudyGroup().getGroupAdmin() == id) {
+                        psg_current.setGroupAdmin(psg_current.getPersons().get(psg_current.getPersons().size() - 1).getId());
+                    }
+
+                    psg_current.setStudentsCount(psg_current.getStudentsCount() - 1);
+                    studyGroupRepository.save(psg_current);
                     StudyGroup s = studyGroup.get();
                     s.setStudentsCount(s.getStudentsCount() + 1);
                     person.setStudyGroup(s);
                     studyGroupRepository.save(s);
                     return personMapper.toDto(personRepository.save(person));
-                } else {
-                    person.setStudyGroup(studyGroup.get());
-                    return personMapper.toDto(personRepository.save(person));
                 }
-
-            } else {
-                if (p.getStudyGroup().getPersons().size() == 1) {
-                    person.setStudyGroup(studyGroup.get());
-                    return personMapper.toDto(personRepository.save(person));
-                }
-                if (p.getStudyGroup().getGroupAdmin() == id) {
-                    psg.setGroupAdmin(psg.getPersons().get(p.getStudyGroup().getPersons().size() - 1).getId());
-                }
-
-                psg.setStudentsCount(p.getStudyGroup().getStudentsCount() - 1);
-                studyGroupRepository.save(p.getStudyGroup());
-                StudyGroup s = studyGroup.get();
-                s.setStudentsCount(s.getStudentsCount() + 1);
-                studyGroupRepository.save(s);
-                person.setStudyGroup(s);
-                return personMapper.toDto(personRepository.save(person));
-
             }
         } else {
             return null;
         }
+        return null;
     }
 
     public void deletePerson(int id) {

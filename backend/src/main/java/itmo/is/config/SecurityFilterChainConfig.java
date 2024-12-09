@@ -43,13 +43,13 @@ public class SecurityFilterChainConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOriginPattern("*"); // Разрешаем запросы с указанного домена
-        config.addAllowedMethod("*"); // Разрешаем любые методы
-        config.addAllowedHeader("*"); // Разрешаем любые заголовки
-        config.setAllowCredentials(true); // Разрешаем cookies и credentials
+        config.addAllowedOriginPattern("*");
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config); // Применяем настройки для всех маршрутов
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 

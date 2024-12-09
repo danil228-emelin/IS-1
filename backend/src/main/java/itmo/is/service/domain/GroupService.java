@@ -77,9 +77,13 @@ public class GroupService {
             newOne.setGroupAdmin(person.get().getId());
             person.get().setStudyGroup(newOne);
             personMapper.toDto(personRepository.save(person.get()));
+            log.info("createGroup finished successfully");
+            return studyGroupMapper.toDto(studyGroupRepository.save(newOne));
+        }else{
+            log.info("createGroup finished with error");
+            return null;
+
         }
-        log.info("createGroup finished");
-        return studyGroupMapper.toDto(studyGroupRepository.save(newOne));
     }
 
     public PersonDto findGroupAdminWithMinimalId() {
