@@ -138,31 +138,7 @@ public class PersonService {
         personRepository.save(person);
     }
 
-    public CountResponse countPeopleByExactWeight(Integer weight) {
-        return new CountResponse(personRepository.countByWeightEquals(weight));
-    }
 
-    public CountResponse countPeopleByWeightLessThan(Integer weight) {
-        return new CountResponse(personRepository.countByWeightLessThan(weight));
-    }
-
-    public List<Country> findDistinctNationalities() {
-        return personRepository.findDistinctNationalities();
-    }
-
-
-    public PercentageResponse calculatePercentageOfPeopleByEyeColor(Color color) {
-        long total = personRepository.count();
-
-        if (total == 0) {
-            return new PercentageResponse(0);
-        }
-
-        long countByEyeColor = personRepository.countByEyeColorEquals(color);
-        double percentage = (double) countByEyeColor / (double) total * 100;
-
-        return new PercentageResponse(percentage);
-    }
 
     public void deleteElementsFromGroup(Integer groupId) {
         personRepository.deleteAllByStudyGroupId(groupId);

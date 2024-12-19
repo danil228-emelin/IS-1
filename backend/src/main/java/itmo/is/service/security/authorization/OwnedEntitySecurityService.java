@@ -36,6 +36,20 @@ public abstract class OwnedEntitySecurityService<T extends OwnedEntity, ID> {
         return isOwner || isAdminAndIsAdminEditAllowed;
     }
 
+    public boolean hasEditRightsGroup(ID ownedEntityId) {
+        var entity = findById(ownedEntityId);
+        var currentUser = getCurrentUser();
+
+        return hasEditRightsGroup(currentUser, entity);
+    }
+
+    private boolean hasEditRightsGroup(User user, OwnedEntity entity) {
+        boolean isOwner = isOwner(user, entity);
+        boolean isAdminAndIsAdminEditAllowed = user.getRole() == Role.ROLE_ADMIN;
+
+        return isOwner || isAdminAndIsAdminEditAllowed;
+    }
+
     private boolean isOwner(User user, OwnedEntity entity) {
         return entity.getOwner().getId().equals(user.getId());
     }

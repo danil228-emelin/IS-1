@@ -1,4 +1,4 @@
-const backendUrl = 'http://localhost:8080/api/groups';
+const backendUrl = 'http://localhost:24727/api/groups';
 
 
 function renderTable(data) {

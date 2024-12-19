@@ -17,14 +17,6 @@ import java.util.Optional;
 public interface PersonRepository extends JpaRepository<Person, Integer> {
     Page<Person> findAllByNameContaining(@NotNull String name, @NotNull Pageable pageable);
 
-    long countByWeightEquals(@NotNull Integer weight);
-
-    long countByWeightLessThan(@NotNull Integer weight);
-
-    @Query("SELECT DISTINCT p.nationality FROM Person p")
-    List<Country> findDistinctNationalities();
-
-    long countByEyeColorEquals(@NotNull Color color);
 
     @Query("DELETE FROM Person p WHERE p.studyGroup.id = :studyGroupId and p.id!=p.studyGroup.groupAdmin")
     @Modifying

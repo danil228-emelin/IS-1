@@ -3,8 +3,8 @@ services:
     image: postgres:latest
     container_name: postgres
     environment:
-      POSTGRES_USER: nastenysh
-      POSTGRES_PASSWORD: qwerty12345
+      POSTGRES_USER: s368149
+      POSTGRES_PASSWORD: A4diwszNUMbJj7s9
       POSTGRES_DB: studs
     ports:
       - "15432:5432"

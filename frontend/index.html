@@ -47,6 +47,19 @@
             text-align: center;
             margin-top: 10px;
         }
+        .form-switch button {
+            background-color: #f8f9fa;
+            color: #007bff;
+            border: none;
+            cursor: pointer;
+        }
+        .form-switch button:hover {
+            background-color: #e9ecef;
+        }
+        .checkbox-container {
+            margin-top: 10px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -69,6 +82,13 @@
     <form id="registerForm">
         <input type="text" id="registerEmail" placeholder="Email" required>
         <input type="password" id="registerPassword" placeholder="Password" required>
+
+        <!-- Checkbox for registering as admin -->
+        <div class="checkbox-container">
+            <input type="checkbox" id="isAdmin">
+            <label for="isAdmin">Register as Admin</label>
+        </div>
+
         <button type="submit">Register</button>
     </form>
 
@@ -76,6 +96,7 @@
         <p>Already have an account? <button id="switchToLogin">Login</button></p>
     </div>
 </div>
+
 <script src="js/auth.js"></script>
 </body>
 </html>

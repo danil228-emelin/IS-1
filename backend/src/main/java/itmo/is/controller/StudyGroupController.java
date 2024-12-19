@@ -33,7 +33,7 @@ public class StudyGroupController {
     }
 
     @PostMapping("/addPerson")
-    @PreAuthorize("@personSecurityService.isOwner(#request.group_id())")
+    @PreAuthorize("@personSecurityService.hasEditRights(#request.person_id())")
     public ResponseEntity<String> addPersonToGroup(@RequestBody AddPersonToGroupRequest request) {
         try {
             log.info("addPersonToGroup methods start");
@@ -96,7 +96,7 @@ public class StudyGroupController {
     }
 
     @DeleteMapping("/delete-all")
-    @PreAuthorize("@personSecurityService.isOwner(#groupId)")
+    @PreAuthorize("@personSecurityService.hasEditRightsGroup(#groupId)")
     public ResponseEntity<String> deleteAll(@RequestParam("groupId") Integer groupId) {
         studyGroupService.deleteElementsFromGroup(groupId);
         return ResponseEntity.ok("delete people from group");

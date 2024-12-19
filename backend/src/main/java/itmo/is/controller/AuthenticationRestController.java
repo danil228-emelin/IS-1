@@ -6,6 +6,7 @@ import itmo.is.dto.authentication.RegisterRequest;
 import itmo.is.dto.authentication.UserDto;
 import itmo.is.service.security.authentication.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationRestController {
     private final AuthenticationService authenticationService;
 
@@ -36,11 +38,16 @@ public class AuthenticationRestController {
 
     public ResponseEntity<JwtResponse> registerAdmin(@RequestBody RegisterRequest request) {
         if (authenticationService.hasRegisteredAdmins()) {
+            log.info("First admin is already registered, register others as disabled");
             authenticationService.submitAdminRegistrationRequest(request);
             return ResponseEntity.ok().build();
         } else {
+            log.info("Register first admin");
             return ResponseEntity.ok(authenticationService.registerFirstAdmin(request));
+
         }
+
+
     }
 
     @PutMapping("admin/registration-requests/{userId}")

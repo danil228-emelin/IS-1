@@ -58,6 +58,7 @@ public class AuthenticationService {
 
     public JwtResponse registerFirstAdmin(RegisterRequest request) {
         if (hasRegisteredAdmins()) {
+            log.info("First admin is already registered");
             throw new AuthenticationServiceException("First admin is already registered");
         }
         return registerEnabled(request, Role.ROLE_ADMIN);
@@ -65,6 +66,7 @@ public class AuthenticationService {
 
     public void submitAdminRegistrationRequest(RegisterRequest registerRequest) {
         if (!hasRegisteredAdmins()) {
+            log.info("First admin is not registered yet");
             throw new AuthenticationServiceException("First admin is not registered yet");
         }
         boolean enabled = false;

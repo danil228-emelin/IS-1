@@ -1,21 +1,21 @@
 // NEED TO CHANGE WHEN GOING TO HELIOS.
-const backendUrl = 'http://localhost:8080/api';
+const backendUrl = 'http://localhost:24727/api';
 
 // Switch between login and register forms
-document.getElementById('switchToRegister').addEventListener('click', function() {
+document.getElementById('switchToRegister').addEventListener('click', function () {
     document.getElementById('loginForm').reset();
     document.getElementById('loginContainer').style.display = 'none';
     document.getElementById('registerContainer').style.display = 'block';
 });
 
-document.getElementById('switchToLogin').addEventListener('click', function() {
+document.getElementById('switchToLogin').addEventListener('click', function () {
     document.getElementById('registerForm').reset();
     document.getElementById('registerContainer').style.display = 'none';
     document.getElementById('loginContainer').style.display = 'block';
 });
 
 // Handle Login form submission
-document.getElementById('loginForm').addEventListener('submit', async function(event) {
+document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const email = document.getElementById('loginEmail').value;
@@ -52,28 +52,31 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 });
 
 // Handle Register form submission
-document.getElementById('registerForm').addEventListener('submit', async function(event) {
+document.getElementById('registerForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
-
+    const isAdmin = document.getElementById("isAdmin").checked;
     if (password.length < 8) {
         alert('Password must be at least 8 characters long!');
         return; // Stop form submission
     }
-
-    const registerData = {email, password};
-
+    let url = ""
+    if (isAdmin) {
+        url = `${backendUrl}/auth/register-admin`
+    }else{
+        url = `${backendUrl}/auth/register`
+    }
     try {
-        const response = await fetch(`${backendUrl}/auth/register`, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 username: email,
-                password: password,
+                password: password
             }),
         });
 

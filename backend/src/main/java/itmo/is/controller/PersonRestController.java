@@ -3,10 +3,6 @@ package itmo.is.controller;
 import itmo.is.dto.domain.PersonDto;
 import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
-import itmo.is.dto.domain.response.CountResponse;
-import itmo.is.dto.domain.response.PercentageResponse;
-import itmo.is.model.domain.Color;
-import itmo.is.model.domain.Country;
 import itmo.is.service.domain.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -70,7 +64,7 @@ public class PersonRestController {
         return ResponseEntity.ok(updatedPerson);
     }
 
-    @PreAuthorize("@personSecurityService.isOwner(#id)")
+    @PreAuthorize("@personSecurityService.hasEditRights(#id)")
     @DeleteMapping("/{id}")
 
     public ResponseEntity<Void> deletePerson(@PathVariable int id) {
@@ -95,32 +89,5 @@ public class PersonRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/count-by-weight")
 
-    public ResponseEntity<CountResponse> countPeopleByWeight(@RequestParam Integer weight) {
-        CountResponse response = personService.countPeopleByExactWeight(weight);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/count-by-weight-less-than")
-
-    public ResponseEntity<CountResponse> countPeopleByWeightLessThan(@RequestParam Integer weight) {
-        CountResponse response = personService.countPeopleByWeightLessThan(weight);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/nationalities")
-
-    public ResponseEntity<List<Country>> getDistinctNationalities() {
-        List<Country> nationalities = personService.findDistinctNationalities();
-        return ResponseEntity.ok(nationalities);
-    }
-
-
-    @GetMapping("/percentage-by-eye-color")
-
-    public ResponseEntity<PercentageResponse> calculatePercentageByEyeColor(@RequestParam Color color) {
-        PercentageResponse response = personService.calculatePercentageOfPeopleByEyeColor(color);
-        return ResponseEntity.ok(response);
-    }
 }
