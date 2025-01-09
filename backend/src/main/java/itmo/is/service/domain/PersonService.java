@@ -3,11 +3,7 @@ package itmo.is.service.domain;
 import itmo.is.dto.domain.PersonDto;
 import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
-import itmo.is.dto.domain.response.CountResponse;
-import itmo.is.dto.domain.response.PercentageResponse;
 import itmo.is.mapper.domain.PersonMapper;
-import itmo.is.model.domain.Color;
-import itmo.is.model.domain.Country;
 import itmo.is.model.domain.Person;
 import itmo.is.model.domain.StudyGroup;
 import itmo.is.repository.PersonRepository;
@@ -30,6 +26,66 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final StudyGroupRepository studyGroupRepository;
     private final PersonMapper personMapper;
+
+
+    public void importPersonFromFile(List<Person> persons) {
+        for (Person person : persons) {
+            if (person.getId() != 0) {
+                updatePersonFromFile(person);
+            } else {
+                personRepository.save(person);
+
+            }
+        }
+
+    }
+
+
+    public void updatePersonFromFile(Person person) {
+        Optional<StudyGroup> studyGroup = Optional.empty();
+        if (person.getStudyGroup() != null) {
+            studyGroup = studyGroupRepository.findById(person.getStudyGroup().getId());
+        }
+        Optional<Person> personBD = personRepository.findById(person.getId());
+        if (personBD.isPresent()) {
+            Person p_current_in_db = personBD.get();
+            StudyGroup psg_current = p_current_in_db.getStudyGroup();
+            if (psg_current == null) {
+                StudyGroup s;
+                if (studyGroup.isPresent()) {
+                    s = studyGroup.get();
+                    s.setStudentsCount(s.getStudentsCount() + 1);
+                    person.setStudyGroup(s);
+                    studyGroupRepository.save(s);
+                }
+                personRepository.save(person);
+                return;
+            } else {
+                if (studyGroup.isPresent()) {
+                    if (psg_current.getPersons().size() == 1) {
+                        person.setStudyGroup(psg_current);
+                        personRepository.save(person);
+                        return;
+                    }
+                    if (p_current_in_db.getStudyGroup().getGroupAdmin() == person.getId()) {
+                        psg_current.setGroupAdmin(psg_current.getPersons().get(psg_current.getPersons().size() - 1).getId());
+                    }
+
+                    psg_current.setStudentsCount(psg_current.getStudentsCount() - 1);
+                    studyGroupRepository.save(psg_current);
+                    StudyGroup s = studyGroup.get();
+                    s.setStudentsCount(s.getStudentsCount() + 1);
+                    person.setStudyGroup(s);
+                    studyGroupRepository.save(s);
+                    personRepository.save(person);
+                    return;
+                }
+            }
+        } else {
+            return;
+        }
+        return;
+    }
 
 
     public Page<PersonDto> findAllPeople(String name, Pageable pageable) {
@@ -137,7 +193,6 @@ public class PersonService {
         person.setAdminEditAllowed(false);
         personRepository.save(person);
     }
-
 
 
     public void deleteElementsFromGroup(Integer groupId) {

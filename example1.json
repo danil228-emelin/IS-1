@@ -1,0 +1,67 @@
+[
+  {
+    "name": "John",
+    "coordinates": {
+      "x": 45.678,
+      "y": -23.456
+    },
+    "eyeColor": "BLUE",
+    "location": {
+      "x": 12.34,
+      "y": 56.78,
+      "z": 9.10
+    },
+    "weight": 70,
+    "nationality": "FRANCE",
+    "adminEditAllowed": true
+  },
+  {
+    "name": "Jane",
+    "coordinates": {
+      "x": 23.567,
+      "y": -12.345
+    },
+    "eyeColor": "BLUE",
+    "location": {
+      "x": 13.45,
+      "y": 67.89,
+      "z": 10.11
+    },
+    "weight": 65,
+    "nationality": "FRANCE",
+    "adminEditAllowed": false
+  },
+  {
+    "name": "Alice",
+    "coordinates": {
+      "x": 10,
+      "y": -34
+    },
+    "eyeColor": "BLUE",
+    "location": {
+      "x": 15,
+      "y": 89,
+      "z": 11
+    },
+    "weight": 55,
+    "nationality": "FRANCE",
+    "adminEditAllowed": true
+  },
+  {
+    "id": 4,
+    "name": "Bob",
+    "coordinates": {
+      "x": 56.789,
+      "y": -45.678
+    },
+    "eyeColor": "BLUE",
+    "location": {
+      "x": 23.45,
+      "y": 67.89,
+      "z": 12.13
+    },
+    "weight": 80,
+    "nationality": "FRANCE",
+    "adminEditAllowed": false
+  }
+]

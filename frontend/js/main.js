@@ -1,4 +1,4 @@
-const backendUrl = 'http://localhost:24727/api/people';
+const backendUrl = 'http://localhost:8080/api/people';
 
 tableBody = document.getElementById('tableBody');
 
@@ -207,8 +207,8 @@ form.onsubmit = function (event) {
         // Optionally, redirect to the login page
         window.location.href = '../index.html';
         return;
-    }else{
-        console.log("CREATE PERSON:"+token)
+    } else {
+        console.log("CREATE PERSON:" + token)
     }
 
     fetch(`${backendUrl}`, {
@@ -335,7 +335,7 @@ form_update.onsubmit = function (event) {
             },
             "weight": weight,
             "nationality": nationality,
-            "group_id":study_group,
+            "group_id": study_group,
             "admin_edit_allowed": admin_allowed === "true"
         })
     })
@@ -419,3 +419,44 @@ function getColumnIndex(column) {
         return 2; // "Name" column is the second column
     }
 }
+
+// Trigger the file input dialog when the "Import file" button is clicked
+document.getElementById('importFileBtn').addEventListener('click', function () {
+    document.getElementById('fileInput').click(); // Trigger the file input
+});
+
+// Handle file selection and send it to the backend
+document.getElementById('fileInput').addEventListener('change', function (event) {
+    const file = event.target.files[0]; // Get the selected file
+    const token = localStorage.getItem('token');
+
+    if (file) {
+        // Ensure the file is a JSON file
+        if (file.type !== 'application/json') {
+            alert('Please upload a valid JSON file.');
+            return;
+        }
+
+        // Create a FormData object to send the file
+        const formData = new FormData();
+        formData.append('file', file); // Append the file to the form data
+
+        // Send the formData to the backend via fetch
+        fetch(`${backendUrl}/import`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Access-Control-Allow-Origin": "*"
+            },
+            body: formData // The FormData object will automatically set the correct content type
+        })
+            .then(data => {
+                console.log('Response from server:', data);
+                window.location.reload()
+            })
+            .catch(error => {
+                console.error('Error during file upload:', error);
+                alert('An error occurred while uploading the file.');
+            });
+    }
+});

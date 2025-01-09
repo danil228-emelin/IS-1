@@ -3,6 +3,8 @@ package itmo.is.controller;
 import itmo.is.dto.domain.PersonDto;
 import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
+import itmo.is.model.domain.Person;
+import itmo.is.service.domain.ImportService;
 import itmo.is.service.domain.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PersonRestController {
     private final PersonService personService;
+    private final ImportService personImportService;
 
     @GetMapping
 
@@ -31,6 +39,32 @@ public class PersonRestController {
         Page<PersonDto> people = personService.findAllPeople(name, pageable);
         log.info("getAllPeople method finished");
         return ResponseEntity.ok(people);
+    }
+    /**
+     * Метод для массового импорта объектов PersonDto из JSON файла.
+     *
+     * @param file Файл JSON с данными объектов PersonDto
+     * @return Ответ с результатом импорта
+     */
+    @PostMapping("/import")
+    public ResponseEntity<String> importPersons(@RequestParam("file") MultipartFile file) {
+        try {
+            log.info("importPersons method started");
+            File tempFile = File.createTempFile("import-", ".json");
+            file.transferTo(tempFile);
+
+            // Импортируем данные
+            List<Person> persons = personImportService.importPersonsFromFile(tempFile);
+            personService.importPersonFromFile(persons);
+
+            log.info("importPersons method finished");
+
+            return ResponseEntity.ok("Successfully imported " + persons.size() + " persons.");
+        } catch (IOException e) {
+            log.info("importPersons method finished with error");
+            log.info(e.getMessage());
+            return ResponseEntity.status(500).body("Failed to import persons: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

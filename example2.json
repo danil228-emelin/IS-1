@@ -1,0 +1,19 @@
+[
+
+  { "id": 1,
+    "name": "Alice-changed",
+    "coordinates": {
+      "x": 100,
+      "y": 100
+    },
+    "eyeColor": "BLUE",
+    "location": {
+      "x": 15,
+      "y": 89,
+      "z": 11
+    },
+    "weight": 55,
+    "nationality": "FRANCE",
+    "adminEditAllowed": true
+  }
+]

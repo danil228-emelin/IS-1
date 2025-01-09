@@ -1,4 +1,4 @@
-const backendUrl = 'http://localhost:24727/api/admin';
+const backendUrl = 'http://localhost:8080/api/admin';
 
 tableBody = document.getElementById('tableBody');
 

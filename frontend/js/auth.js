@@ -1,5 +1,5 @@
 // NEED TO CHANGE WHEN GOING TO HELIOS.
-const backendUrl = 'http://localhost:24727/api';
+const backendUrl = 'http://localhost:8080/api';
 
 // Switch between login and register forms
 document.getElementById('switchToRegister').addEventListener('click', function () {
