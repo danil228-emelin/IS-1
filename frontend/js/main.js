@@ -414,7 +414,7 @@ function sortTable(column) {
 // Helper function to get the column index based on the column name
 function getColumnIndex(column) {
     if (column === 'id') {
-        return 1; // "Id" column is the first column
+        return 1;
     } else if (column === 'name') {
         return 2; // "Name" column is the second column
     }

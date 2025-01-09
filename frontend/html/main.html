@@ -30,6 +30,7 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        table-layout: auto; /* Allows the column widths to adjust dynamically */
       }
       table, th, td {
         border: 1px solid #ddd;
@@ -37,6 +38,7 @@
       th, td {
         padding: 12px;
         text-align: center;
+        word-wrap: break-word; /* Breaks long text into new lines */
       }
       th {
         background-color: #4CAF50;
@@ -46,11 +48,8 @@
       td {
         background-color: #f9f9f9;
       }
-      .empty-message {
-        text-align: center;
-        font-size: 18px;
-        color: #666;
-        margin-top: 20px;
+      .table-container {
+        overflow-x: auto; /* Adds horizontal scrolling for very wide tables */
       }
 
       /* Button container styling */
@@ -173,28 +172,29 @@
     </div>
     <input type="file" id="fileInput" style="display: none;" accept=".json">
 
-    <table>
-      <thead>
-      <tr>
-        <th class="sortable" onclick="sortTable('id')">Id</th>
-        <th class="sortable" onclick="sortTable('name')">Name</th>
-        <th>coord (x)</th>
-        <th>coord (y)</th>
-        <th>eyeColor</th>
-        <th>loc (x)</th>
-        <th>loc (y)</th>
-        <th>loc (z)</th>
-        <th>weight</th>
-        <th>study gr</th>
-        <th>nationality</th>
-        <th>adminEditAllowed</th>
-      </tr>
-      </thead>
-      <tbody id="tableBody">
-      <!-- Rows will be dynamically added here -->
-      </tbody>
-    </table>
-  </div>
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th class="sortable" onclick="sortTable('id')">Id</th>
+          <th class="sortable" onclick="sortTable('name')">Name</th>
+          <th>coord (x)</th>
+          <th>coord (y)</th>
+          <th>eyeColor</th>
+          <th>loc (x)</th>
+          <th>loc (y)</th>
+          <th>loc (z)</th>
+          <th>weight</th>
+          <th>study gr</th>
+          <th>nationality</th>
+          <th>adminEditAllowed</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        <!-- Rows will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
 
   <!-- Modal for Adding New Person -->
   <div id="addPersonModal" class="modal">
