@@ -48,7 +48,6 @@
     "adminEditAllowed": true
   },
   {
-    "id": 4,
     "name": "Bob",
     "coordinates": {
       "x": 56.789,

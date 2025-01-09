@@ -8,6 +8,7 @@ import itmo.is.model.domain.Person;
 import itmo.is.model.domain.StudyGroup;
 import itmo.is.repository.PersonRepository;
 import itmo.is.repository.StudyGroupRepository;
+import itmo.is.service.security.authorization.PersonSecurityService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final StudyGroupRepository studyGroupRepository;
     private final PersonMapper personMapper;
+    private final PersonSecurityService personSecurityService;
 
     @Transactional
     public void importPersonFromFile(List<Person> persons) {
@@ -42,7 +44,10 @@ public class PersonService {
     }
 
     private void validatePerson(Person person) {
-        // Проверка имени
+        if (person.getId()!=0 && ! personSecurityService.hasEditRights(person.getId())){
+            throw new IllegalArgumentException("Current user can't change person with id "+person.getId());
+
+        }
         if (person.getName() == null || person.getName().isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
         }
@@ -121,9 +126,8 @@ public class PersonService {
                 }
             }
         } else {
-            return;
+            throw new RuntimeException("Person with id "+person.getId() +" doesn't exist");
         }
-        return;
     }
 
 

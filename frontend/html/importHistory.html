@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import History</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    td {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .timestamp {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Centered Pagination (Optional, in case you have a large number of rows) */
+    .pagination {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .pagination button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Import History</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Status</th>
+      <th>User</th>
+      <th>Added Count</th>
+      <th>Timestamp</th>
+    </tr>
+    </thead>
+    <tbody id="historyTableBody">
+    <!-- Data will be dynamically inserted here -->
+    </tbody>
+  </table>
+
+  <!-- Optional pagination for large tables -->
+  <div class="pagination">
+    <button onclick="window.location.href='main.html'">Previous </button>
+    <button onclick="window.location.href='add_study_group.html'">Next</button>
+  </div>
+</div>
+<script src="../js/import.js"></script>
+
+
+</body>
+</html>

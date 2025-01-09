@@ -3,9 +3,14 @@ package itmo.is.controller;
 import itmo.is.dto.domain.PersonDto;
 import itmo.is.dto.domain.request.CreatePersonRequest;
 import itmo.is.dto.domain.request.UpdatePersonRequest;
+import itmo.is.model.domain.ImportHistory;
 import itmo.is.model.domain.Person;
+import itmo.is.model.security.Role;
+import itmo.is.model.security.User;
+import itmo.is.service.domain.ImportHistoryService;
 import itmo.is.service.domain.ImportService;
 import itmo.is.service.domain.PersonService;
+import itmo.is.service.security.authorization.PersonSecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,6 +33,8 @@ import java.util.List;
 public class PersonRestController {
     private final PersonService personService;
     private final ImportService personImportService;
+    private final ImportHistoryService importHistoryService;
+    private final PersonSecurityService personSecurityService;
 
     @GetMapping
 
@@ -48,6 +55,8 @@ public class PersonRestController {
      */
     @PostMapping("/import")
     public ResponseEntity<String> importPersons(@RequestParam("file") MultipartFile file) {
+        User user = personSecurityService.getCurrentUser();
+
         try {
             log.info("importPersons method started");
             File tempFile = File.createTempFile("import-", ".json");
@@ -56,16 +65,22 @@ public class PersonRestController {
             List<Person> persons = personImportService.importPersonsFromFile(tempFile);
             personService.importPersonFromFile(persons);
 
+            // Записываем успешный импорт в историю
+            importHistoryService.recordImportHistory(user.getId(), "SUCCESS", persons.size(),user.getUsername());
+
             log.info("importPersons method finished");
             return ResponseEntity.ok("Successfully imported " + persons.size() + " persons.");
         } catch (IllegalArgumentException e) {
             log.error("Validation error during import", e);
+            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0, user.getUsername());
             return ResponseEntity.status(400).body("Validation error: " + e.getMessage());
         } catch (Exception e) {
             log.error("Error during import", e);
+            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0,user.getUsername());
             return ResponseEntity.status(500).body("Failed to import persons: " + e.getMessage());
         }
     }
+
 
 
     @GetMapping("/{id}")
@@ -122,6 +137,16 @@ public class PersonRestController {
     public ResponseEntity<Void> denyAdminEditing(@PathVariable int id) {
         personService.denyAdminEditing(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/import/history")
+    public ResponseEntity<List<ImportHistory>> getImportHistory() {
+        User user = personSecurityService.getCurrentUser();
+
+        if (user.getRole() == Role.ROLE_ADMIN) {
+            return ResponseEntity.ok(importHistoryService.getAllImportHistory());
+        } else {
+            return ResponseEntity.ok(importHistoryService.getImportHistoryForUser(user.getId()));
+        }
     }
 
 

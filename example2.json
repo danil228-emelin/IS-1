@@ -1,7 +1,6 @@
 [
   {
     "id": 1,
-    "studyGroup": 1,
     "name": "Alice-changed",
     "coordinates": {
       "x": 50,
@@ -19,7 +18,6 @@
   },
   {
     "id": 4,
-    "studyGroup": 1,
     "name": "Bob",
     "coordinates": {
       "x": 500,

@@ -29,6 +29,7 @@ public abstract class OwnedEntitySecurityService<T extends OwnedEntity, ID> {
         return hasEditRights(currentUser, entity);
     }
 
+
     private boolean hasEditRights(User user, OwnedEntity entity) {
         boolean isOwner = isOwner(user, entity);
         boolean isAdminAndIsAdminEditAllowed = user.getRole() == Role.ROLE_ADMIN && entity.isAdminEditAllowed();
@@ -54,7 +55,7 @@ public abstract class OwnedEntitySecurityService<T extends OwnedEntity, ID> {
         return entity.getOwner().getId().equals(user.getId());
     }
 
-    private User getCurrentUser() {
+    public User getCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
