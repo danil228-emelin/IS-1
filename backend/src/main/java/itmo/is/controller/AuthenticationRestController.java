@@ -27,7 +27,7 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
-    @PostMapping("/auth/register")
+        @PostMapping("/auth/register")
     @CrossOrigin(origins = "*")
     public ResponseEntity<JwtResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.registerUser(request));
