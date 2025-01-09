@@ -53,19 +53,20 @@ public class PersonRestController {
             File tempFile = File.createTempFile("import-", ".json");
             file.transferTo(tempFile);
 
-            // Импортируем данные
             List<Person> persons = personImportService.importPersonsFromFile(tempFile);
             personService.importPersonFromFile(persons);
 
             log.info("importPersons method finished");
-
             return ResponseEntity.ok("Successfully imported " + persons.size() + " persons.");
-        } catch (IOException e) {
-            log.info("importPersons method finished with error");
-            log.info(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("Validation error during import", e);
+            return ResponseEntity.status(400).body("Validation error: " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Error during import", e);
             return ResponseEntity.status(500).body("Failed to import persons: " + e.getMessage());
         }
     }
+
 
     @GetMapping("/{id}")
 

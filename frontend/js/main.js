@@ -207,8 +207,8 @@ form.onsubmit = function (event) {
         // Optionally, redirect to the login page
         window.location.href = '../index.html';
         return;
-    } else {
-        console.log("CREATE PERSON:" + token)
+    }else{
+        console.log("CREATE PERSON:"+token)
     }
 
     fetch(`${backendUrl}`, {
@@ -335,7 +335,7 @@ form_update.onsubmit = function (event) {
             },
             "weight": weight,
             "nationality": nationality,
-            "group_id": study_group,
+            "group_id":study_group,
             "admin_edit_allowed": admin_allowed === "true"
         })
     })
@@ -414,7 +414,7 @@ function sortTable(column) {
 // Helper function to get the column index based on the column name
 function getColumnIndex(column) {
     if (column === 'id') {
-        return 1;
+        return 1; // "Id" column is the first column
     } else if (column === 'name') {
         return 2; // "Name" column is the second column
     }
@@ -450,13 +450,15 @@ document.getElementById('fileInput').addEventListener('change', function (event)
             },
             body: formData // The FormData object will automatically set the correct content type
         })
-            .then(data => {
-                console.log('Response from server:', data);
-                window.location.reload()
+            .then(response =>{
+                if (!response.ok) {
+                   alert('Error during file upload');
+                }else{
+                    window.location.reload()
+                }
             })
             .catch(error => {
                 console.error('Error during file upload:', error);
-                alert('An error occurred while uploading the file.');
             });
     }
 });

@@ -27,9 +27,10 @@ public class PersonService {
     private final StudyGroupRepository studyGroupRepository;
     private final PersonMapper personMapper;
 
-
+    @Transactional
     public void importPersonFromFile(List<Person> persons) {
         for (Person person : persons) {
+            validatePerson(person);
             if (person.getId() != 0) {
                 updatePersonFromFile(person);
             } else {
@@ -40,6 +41,44 @@ public class PersonService {
 
     }
 
+    private void validatePerson(Person person) {
+        // Проверка имени
+        if (person.getName() == null || person.getName().isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or empty.");
+        }
+        if (person.getName().length() < 2 || person.getName().length() > 50) {
+            throw new IllegalArgumentException("Name must be between 2 and 50 characters.");
+        }
+
+        // Проверка координат
+        if (person.getCoordinates().getX() < 0) {
+            throw new IllegalArgumentException("Coordinate X cannot be negative.");
+        }
+        if (person.getCoordinates().getY() < -100 || person.getCoordinates().getY() > 100) {
+            throw new IllegalArgumentException("Coordinate Y must be between -100 and 100.");
+        }
+
+
+        // Проверка местоположения
+        if (person.getLocation().getX() < -1000 || person.getLocation().getX() > 1000) {
+            throw new IllegalArgumentException("Location X must be between -1000 and 1000.");
+        }
+        if (person.getLocation().getY() < -1000 || person.getLocation().getY() > 1000) {
+            throw new IllegalArgumentException("Location Y must be between -1000 and 1000.");
+        }
+        if (person.getLocation().getZ() < -1000 || person.getLocation().getZ() > 1000) {
+            throw new IllegalArgumentException("Location Z must be between -1000 and 1000.");
+        }
+
+        // Проверка веса
+        if (person.getWeight() <= 0) {
+            throw new IllegalArgumentException("Weight must be greater than 0.");
+        }
+        if (person.getWeight() < 30 || person.getWeight() > 300) {
+            throw new IllegalArgumentException("Weight must be between 30 and 300.");
+        }
+
+    }
 
     public void updatePersonFromFile(Person person) {
         Optional<StudyGroup> studyGroup = Optional.empty();

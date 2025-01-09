@@ -1,12 +1,13 @@
 [
-
-  { "id": 1,
+  {
+    "id": 1,
+    "studyGroup": 1,
     "name": "Alice-changed",
     "coordinates": {
-      "x": 100,
-      "y": 100
+      "x": 50,
+      "y": 50
     },
-    "eyeColor": "BLUE",
+    "eyeColor": "RED",
     "location": {
       "x": 15,
       "y": 89,
@@ -15,5 +16,23 @@
     "weight": 55,
     "nationality": "FRANCE",
     "adminEditAllowed": true
+  },
+  {
+    "id": 4,
+    "studyGroup": 1,
+    "name": "Bob",
+    "coordinates": {
+      "x": 500,
+      "y": -4
+    },
+    "eyeColor": "BLUE",
+    "location": {
+      "x": 2,
+      "y": 6,
+      "z": 1
+    },
+    "weight": 32,
+    "nationality": "FRANCE",
+    "adminEditAllowed": false
   }
 ]

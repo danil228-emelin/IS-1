@@ -59,7 +59,7 @@ public class ImportService {
             Long groupId = jsonParser.getLongValue();
 
             return studyGroupRepository.findById(Long.valueOf(groupId))
-                    .orElseThrow(() -> new RuntimeException("Study group not found"));
+                    .orElseThrow(() -> new RuntimeException("Study group not found with id"+ groupId));
         }
     }
 }
