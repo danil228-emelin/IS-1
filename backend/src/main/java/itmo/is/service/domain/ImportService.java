@@ -10,6 +10,7 @@ import itmo.is.model.domain.Person;
 import itmo.is.model.domain.StudyGroup;
 import itmo.is.repository.PersonRepository;
 import itmo.is.repository.StudyGroupRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ImportService {
 
     private final ObjectMapper objectMapper;
@@ -55,10 +57,12 @@ public class ImportService {
     public class StudyGroupDeserializer extends JsonDeserializer<StudyGroup> {
         @Override
         public StudyGroup deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+           log.info("deserialize for StudyGroup start");
             // Read the value as an integer (or another type as needed)
+
             Long groupId = jsonParser.getLongValue();
 
-            return studyGroupRepository.findById(Long.valueOf(groupId))
+            return studyGroupRepository.findById(groupId)
                     .orElseThrow(() -> new RuntimeException("Study group not found with id"+ groupId));
         }
     }

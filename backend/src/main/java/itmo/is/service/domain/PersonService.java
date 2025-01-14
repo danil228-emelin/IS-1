@@ -9,12 +9,13 @@ import itmo.is.model.domain.StudyGroup;
 import itmo.is.repository.PersonRepository;
 import itmo.is.repository.StudyGroupRepository;
 import itmo.is.service.security.authorization.PersonSecurityService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class PersonService {
     private final PersonMapper personMapper;
     private final PersonSecurityService personSecurityService;
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void importPersonFromFile(List<Person> persons) {
         for (Person person : persons) {
             validatePerson(person);
@@ -37,7 +38,6 @@ public class PersonService {
                 updatePersonFromFile(person);
             } else {
                 personRepository.save(person);
-
             }
         }
 
