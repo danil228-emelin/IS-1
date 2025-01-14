@@ -36,7 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 timestampCell.textContent = new Date(history.timestamp).toLocaleString();
                 row.appendChild(timestampCell);
 
+                const fileName = document.createElement("td");
+                fileName.textContent = history.fileName;
+                row.appendChild(fileName);
+
                 historyTableBody.appendChild(row);
+                console.log(history)
             });
         })
         .catch(error => {

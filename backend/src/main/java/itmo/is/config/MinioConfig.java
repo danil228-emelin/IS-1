@@ -1,0 +1,36 @@
+package itmo.is.config;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.minio.MinioClient;
+
+@Configuration
+@RequiredArgsConstructor
+@Slf4j
+public class MinioConfig {
+
+    @Value("${minio.url}")
+    private String minioUrl;
+
+    @Value("${minio.access.key}")
+    private String accessKey;
+
+    @Value("${minio.secret.key}")
+    private String secretKey;
+
+    @Bean
+    public MinioClient minioClient() {
+        log.info("MinIO URL: " + minioUrl);  // Debug output
+        log.info("Access Key: " + accessKey); // Debug output
+        log.info("Secret Key: " + secretKey); // Debug output
+
+        return MinioClient.builder()
+                .endpoint(minioUrl)
+                .credentials(accessKey, secretKey)
+                .build();
+    }
+}

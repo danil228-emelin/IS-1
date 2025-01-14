@@ -462,3 +462,64 @@ document.getElementById('fileInput').addEventListener('change', function (event)
             });
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const downloadFileBtn = document.getElementById("downloadFileBtn");
+    const modal = document.getElementById("fileNameModal");
+    const closeModal = document.getElementById("closeModal");
+    const confirmDownload = document.getElementById("confirmDownload");
+    const token = localStorage.getItem('token');
+
+    // Show modal on button click
+    downloadFileBtn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // Close the modal
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Handle confirm download action
+    confirmDownload.onclick = function () {
+        const fileName = document.getElementById("fileNameInput").value;
+        // Send the formData to the backend via fetch
+        fetch(`http://localhost:8080/api/files/download/${fileName}`, {
+            method: 'Get',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
+            .then(response => {
+                // Check if the response status is OK
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                return response.blob(); // Convert the response to a Blob
+            })
+            .then(blob => {
+                // Create a link element to initiate the download
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob); // Create a URL for the blob
+                link.download = "Result file"; // Set the filename for the download
+
+                // Append to the body, click, and remove
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+            .catch(error => {
+                console.error('Download failed:', error);
+                alert('Failed to download the file: ' + error.message);
+            });
+    }
+});

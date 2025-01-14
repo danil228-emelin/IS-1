@@ -15,12 +15,13 @@ public class ImportHistoryService {
     private ImportHistoryRepository importHistoryRepository;
 
     @Transactional
-    public void recordImportHistory(Long userId, String status, int addedCount,String name) {
+    public void recordImportHistory(Long userId, String status, int addedCount,String name,String fileName) {
         ImportHistory history = new ImportHistory();
         history.setUserId(userId);
         history.setStatus(status);
         history.setAddedCount(addedCount);
         history.setUserName(name);
+        history.setFileName(fileName);
         importHistoryRepository.save(history);
     }
 

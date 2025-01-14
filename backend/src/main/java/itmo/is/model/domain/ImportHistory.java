@@ -1,11 +1,16 @@
 package itmo.is.model.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
+@Setter
 public class ImportHistory {
+    // Геттеры и сеттеры
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,6 +18,9 @@ public class ImportHistory {
     @Column(nullable = false)
     private Long userId;
     private String userName;
+
+    @Column(nullable = false)
+    private String fileName;
 
     @Column(nullable = false)
     private String status;  // "SUCCESS", "FAILED"
@@ -26,48 +34,4 @@ public class ImportHistory {
         this.timestamp = LocalDateTime.now();
     }
 
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getAddedCount() {
-        return addedCount;
-    }
-
-    public void setAddedCount(int addedCount) {
-        this.addedCount = addedCount;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 }

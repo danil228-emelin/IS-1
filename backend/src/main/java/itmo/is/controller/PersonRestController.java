@@ -9,6 +9,7 @@ import itmo.is.model.security.Role;
 import itmo.is.model.security.User;
 import itmo.is.service.domain.ImportHistoryService;
 import itmo.is.service.domain.ImportService;
+import itmo.is.service.domain.MinioService;
 import itmo.is.service.domain.PersonService;
 import itmo.is.service.security.authorization.PersonSecurityService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class PersonRestController {
     private final ImportService personImportService;
     private final ImportHistoryService importHistoryService;
     private final PersonSecurityService personSecurityService;
+    private final MinioService minioService;
 
     @GetMapping
 
@@ -47,6 +49,7 @@ public class PersonRestController {
         log.info("getAllPeople method finished");
         return ResponseEntity.ok(people);
     }
+
     /**
      * Метод для массового импорта объектов PersonDto из JSON файла.
      *
@@ -66,21 +69,20 @@ public class PersonRestController {
             personService.importPersonFromFile(persons);
 
             // Записываем успешный импорт в историю
-            importHistoryService.recordImportHistory(user.getId(), "SUCCESS", persons.size(),user.getUsername());
-
+            importHistoryService.recordImportHistory(user.getId(), "SUCCESS", persons.size(), user.getUsername(), file.getOriginalFilename());
+            minioService.uploadFile(tempFile,file.getOriginalFilename());
             log.info("importPersons method finished");
             return ResponseEntity.ok("Successfully imported " + persons.size() + " persons.");
         } catch (IllegalArgumentException e) {
             log.error("Validation error during import", e);
-            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0, user.getUsername());
+            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0, user.getUsername(), "");
             return ResponseEntity.status(400).body("Validation error: " + e.getMessage());
         } catch (Exception e) {
             log.error("Error during import", e);
-            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0,user.getUsername());
+            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0, user.getUsername(), "");
             return ResponseEntity.status(500).body("Failed to import persons: " + e.getMessage());
         }
     }
-
 
 
     @GetMapping("/{id}")
@@ -138,6 +140,7 @@ public class PersonRestController {
         personService.denyAdminEditing(id);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/import/history")
     public ResponseEntity<List<ImportHistory>> getImportHistory() {
         User user = personSecurityService.getCurrentUser();
