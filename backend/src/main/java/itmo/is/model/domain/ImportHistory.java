@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 public class ImportHistory {
-    // Геттеры и сеттеры
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +22,9 @@ public class ImportHistory {
     private String fileName;
 
     @Column(nullable = false)
-    private String status;  // "SUCCESS", "FAILED"
+    private String status;
 
-    private int addedCount;  // Количество добавленных объектов (только для успешных операций)
+    private int addedCount;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;  // Время выполнения операции импорта

@@ -68,19 +68,15 @@ public class PersonRestController {
             List<Person> persons = personImportService.importPersonsFromFile(tempFile);
             personService.importPersonFromFile(persons);
 
-            // Записываем успешный импорт в историю
-            importHistoryService.recordImportHistory(user.getId(), "SUCCESS", persons.size(), user.getUsername(), file.getOriginalFilename());
-            minioService.uploadFile(tempFile,file.getOriginalFilename());
+            minioService.importFile(user.getId(), persons.size(), user.getUsername(), tempFile, file.getOriginalFilename());
             log.info("importPersons method finished");
             return ResponseEntity.ok("Successfully imported " + persons.size() + " persons.");
         } catch (IllegalArgumentException e) {
             log.error("Validation error during import", e);
-            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0, user.getUsername(), "");
             return ResponseEntity.status(400).body("Validation error: " + e.getMessage());
         } catch (Exception e) {
             log.error("Error during import", e);
-            importHistoryService.recordImportHistory(user.getId(), "FAILED", 0, user.getUsername(), "");
-            return ResponseEntity.status(500).body("Failed to import persons: " + e.getMessage());
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 

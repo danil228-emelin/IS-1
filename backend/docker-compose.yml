@@ -8,21 +8,3 @@ services:
       POSTGRES_DB: studs
     ports:
       - "15432:5432"
-  is-lab1:
-    build: .
-    depends_on:
-      - postgres
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/studs
-      - SPRING_DATASOURCE_USERNAME=nastenysh
-      - SPRING_DATASOURCE_PASSWORD=qwerty12345
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    ports:
-      - "8080:8080"
-  minio:
-    image: minio/minio
-    ports:
-      - "9000:9000"
-    volumes:
-      - minio-data:/data
-    command: server /data
